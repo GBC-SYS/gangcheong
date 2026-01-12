@@ -31,10 +31,18 @@ const App = (() => {
   // DOM Elements
   const elements = {};
 
+  // Kakao JavaScript 키
+  const KAKAO_JS_KEY = "a53da20fcd102a2d3cb9f1a11de55973";
+
   /**
    * Initialize the app
    */
   const init = () => {
+    // Kakao SDK 초기화
+    if (window.Kakao && !Kakao.isInitialized()) {
+      Kakao.init(KAKAO_JS_KEY);
+    }
+
     cacheElements();
     bindEvents();
     checkExistingUser();
@@ -378,19 +386,25 @@ const App = (() => {
         elements.testimonyText.value = submitted;
         elements.testimonyText.disabled = true;
         elements.saveTestimonyBtn.style.display = "none";
-        document.querySelector(".testimony-form button[type='submit']").textContent = "수정하기";
+        document.querySelector(
+          ".testimony-form button[type='submit']"
+        ).textContent = "수정하기";
       } else if (draft) {
         // 임시저장된 내용 불러오기
         elements.testimonyText.value = draft;
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
-        document.querySelector(".testimony-form button[type='submit']").textContent = "제출하기";
+        document.querySelector(
+          ".testimony-form button[type='submit']"
+        ).textContent = "제출하기";
       } else {
         // 새로 작성
         elements.testimonyText.value = "";
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
-        document.querySelector(".testimony-form button[type='submit']").textContent = "제출하기";
+        document.querySelector(
+          ".testimony-form button[type='submit']"
+        ).textContent = "제출하기";
       }
     }
   };
@@ -421,7 +435,9 @@ const App = (() => {
     if (isSubmitted && isDisabled) {
       elements.testimonyText.disabled = false;
       elements.saveTestimonyBtn.style.display = "";
-      document.querySelector(".testimony-form button[type='submit']").textContent = "수정 완료";
+      document.querySelector(
+        ".testimony-form button[type='submit']"
+      ).textContent = "수정 완료";
       elements.testimonyText.focus();
       showToast("수정 모드로 전환되었습니다 ✏️");
       return;
@@ -535,53 +551,38 @@ const App = (() => {
   };
 
   /**
-   * Handle share button click (Web Share API)
+   * Handle share button click (Kakao 공유)
    */
-  const handleShare = async () => {
+  const handleShare = () => {
     const completed = state.completedMissions.size;
     const total = state.missions.length;
     const testimony = localStorage.getItem("testimony_submitted");
 
+    // Kakao SDK 초기화 확인
+    if (!window.Kakao || !Kakao.isInitialized()) {
+      showToast("카카오 공유를 사용할 수 없습니다");
+      return;
+    }
+
     // 공유 메시지 구성
-    let shareText = `🎯 ${state.userName}님이 ${completed}/${total}개 미션을 완료했어요!`;
+    let description = `🎯 ${completed}/${total}개 미션 완료!`;
 
     // 간증문이 있으면 추가
     if (testimony) {
-      shareText += `\n\n✍️ 간증문:\n"${testimony}"`;
+      description += `\n\n✍️ 간증문:\n"${testimony}"`;
     }
 
-    const shareData = {
-      title: "2025 겨울 수련회 미션",
-      text: shareText,
-    };
+    // 카카오톡 공유
+    const shareUrl = "https://gbc-sys.github.io/gangcheong/mission/";
 
-    // Web Share API 지원 확인
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        // 사용자가 공유 취소한 경우 무시
-        if (err.name !== "AbortError") {
-          fallbackShare(shareData);
-        }
-      }
-    } else {
-      fallbackShare(shareData);
-    }
-  };
-
-  /**
-   * Fallback share (클립보드 복사)
-   */
-  const fallbackShare = (shareData) => {
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText(shareData.text)
-        .then(() => showToast("클립보드에 복사되었습니다! 📋"))
-        .catch(() => showToast("공유하기를 사용할 수 없습니다"));
-    } else {
-      showToast("공유하기를 사용할 수 없습니다");
-    }
+    Kakao.Share.sendDefault({
+      objectType: "text",
+      text: `[2025 겨울 수련회]\n${state.userName}님의 미션 현황\n\n${description}`,
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
+    });
   };
 
   /**
