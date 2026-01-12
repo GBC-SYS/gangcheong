@@ -458,7 +458,7 @@ ul {
 }
 
 .mission-item--completed .mission-item__checkbox {
-  background: var(--gradient-primary);
+  background: var(--color-pink);
 }
 
 .mission-item__checkbox-icon {
