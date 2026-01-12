@@ -6,16 +6,16 @@ const App = (() => {
   // 수련회 일정 설정 (각 Day는 해당 날짜에만 활성화, 다음 날 열리면 이전 Day 잠김)
   const RETREAT_SCHEDULE = {
     1: {
-      start: new Date("2026-01-10T06:00:00"),
-      end: new Date("2026-01-10T24:00:00"),
-    },
-    2: {
-      start: new Date("2026-01-11T06:00:00"),
-      end: new Date("2026-01-11T24:00:00"),
-    },
-    3: {
       start: new Date("2026-01-12T06:00:00"),
       end: new Date("2026-01-12T24:00:00"),
+    },
+    2: {
+      start: new Date("2026-01-13T06:00:00"),
+      end: new Date("2026-01-13T24:00:00"),
+    },
+    3: {
+      start: new Date("2026-01-14T06:00:00"),
+      end: new Date("2026-01-14T24:00:00"),
     },
   };
 
@@ -31,18 +31,10 @@ const App = (() => {
   // DOM Elements
   const elements = {};
 
-  // Kakao JavaScript 키
-  const KAKAO_JS_KEY = "a53da20fcd102a2d3cb9f1a11de55973";
-
   /**
    * Initialize the app
    */
   const init = () => {
-    // Kakao SDK 초기화
-    if (window.Kakao && !Kakao.isInitialized()) {
-      Kakao.init(KAKAO_JS_KEY);
-    }
-
     cacheElements();
     bindEvents();
     checkExistingUser();
@@ -59,17 +51,11 @@ const App = (() => {
 
     // App
     elements.app = document.getElementById("app");
-    elements.displayName = document.getElementById("displayName");
+    elements.header = document.getElementById("header");
     elements.missionContainer = document.getElementById("missionContainer");
-    elements.completedCount = document.getElementById("completedCount");
-    elements.totalCount = document.getElementById("totalCount");
-    elements.progressFill = document.getElementById("progressFill");
 
     // Day tabs
     elements.dayTabs = document.querySelectorAll(".day-tab");
-
-    // Share button
-    elements.shareBtn = document.getElementById("shareBtn");
 
     // Navigation
     elements.bottomNavBtns = document.querySelectorAll(".bottom-nav__btn");
@@ -81,9 +67,6 @@ const App = (() => {
     elements.saveTestimonyBtn = document.getElementById("saveTestimonyBtn");
     elements.testimonyForm = document.querySelector(".testimony-form");
     elements.surveyForm = document.getElementById("surveyForm");
-
-    // Back buttons
-    elements.backBtns = document.querySelectorAll(".back-btn");
   };
 
   /**
@@ -105,19 +88,9 @@ const App = (() => {
       );
     });
 
-    // Share button
-    if (elements.shareBtn) {
-      elements.shareBtn.addEventListener("click", handleShare);
-    }
-
     // Bottom navigation
     elements.bottomNavBtns.forEach((btn) => {
       btn.addEventListener("click", () => handleTabChange(btn.dataset.tab));
-    });
-
-    // Back buttons
-    elements.backBtns.forEach((btn) => {
-      btn.addEventListener("click", () => handleTabChange(btn.dataset.back));
     });
 
     // Testimony form
@@ -167,7 +140,10 @@ const App = (() => {
   const showApp = () => {
     elements.intro.style.display = "none";
     elements.app.style.display = "flex";
-    elements.displayName.textContent = state.userName;
+
+    // Header 컴포넌트 렌더링
+    Header.setOnShareClick(handleShare);
+    Header.render(elements.header, { userName: state.userName });
 
     // 현재 열린 Day 중 가장 최근 것으로 설정
     state.currentDay = getLatestUnlockedDay();
@@ -208,22 +184,18 @@ const App = (() => {
 
     // Show/hide pages
     const mainContent = document.querySelector(".main");
-    const header = document.querySelector(".header");
 
     if (tab === "missions") {
       mainContent.style.display = "block";
-      header.style.display = "block";
       elements.testimonyPage.style.display = "none";
       elements.surveyPage.style.display = "none";
     } else if (tab === "testimony") {
       mainContent.style.display = "none";
-      header.style.display = "none";
       elements.testimonyPage.style.display = "flex";
       elements.surveyPage.style.display = "none";
       loadTestimonyDraft();
     } else if (tab === "survey") {
       mainContent.style.display = "none";
-      header.style.display = "none";
       elements.testimonyPage.style.display = "none";
       elements.surveyPage.style.display = "flex";
       loadSurvey();
@@ -366,11 +338,8 @@ const App = (() => {
   const updateProgress = () => {
     const total = state.missions.length;
     const completed = state.completedMissions.size;
-    const percentage = total > 0 ? (completed / total) * 100 : 0;
 
-    elements.completedCount.textContent = completed;
-    elements.totalCount.textContent = total;
-    elements.progressFill.style.width = `${percentage}%`;
+    Header.updateProgress({ completed, total });
   };
 
   /**
@@ -551,52 +520,60 @@ const App = (() => {
   };
 
   /**
-   * Handle share button click (Kakao 공유)
+   * Handle share button click (Web Share API)
    */
-  const handleShare = () => {
+  const handleShare = async () => {
     const completed = state.completedMissions.size;
     const total = state.missions.length;
     const testimony = localStorage.getItem("testimony_submitted");
 
-    // Kakao SDK 초기화 확인
-    if (!window.Kakao || !Kakao.isInitialized()) {
-      showToast("카카오 공유를 사용할 수 없습니다");
-      return;
-    }
+    // 완료한 미션 목록 가져오기
+    const completedMissionTitles = state.missions
+      .filter((m) => state.completedMissions.has(m.id))
+      .map((m) => `✅ ${m.title}`)
+      .join("\n");
 
     // 공유 메시지 구성
-    let description = `🎯 ${completed}/${total}개 미션 완료!`;
+    let shareText = `${state.userName}님의 미션 현황\n`;
+    shareText += `🎯 ${completed}/${total}개 미션 완료!\n\n`;
+
+    // 완료한 미션 목록 추가
+    if (completedMissionTitles) {
+      shareText += `📋 완료한 미션:\n${completedMissionTitles}\n\n`;
+    }
 
     // 간증문이 있으면 추가
     if (testimony) {
-      description += `\n\n✍️ 간증문:\n"${testimony}"`;
+      shareText += `✍️ 간증문:\n"${testimony}"\n\n`;
     }
 
-    // 카카오톡 공유
-    const shareUrl = "https://gbc-sys.github.io/gangcheong/mission/";
-    const imageUrl = "https://gbc-sys.github.io/gangcheong/mission/assets/images/poster.jpg";
+    // Web Share API 사용 (모바일에서 카카오톡 등 앱 선택 가능)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "2026 강청 겨울 수련회",
+          text: shareText,
+        });
+      } catch (error) {
+        // 사용자가 공유 취소한 경우
+        if (error.name !== "AbortError") {
+          copyToClipboard(shareText);
+        }
+      }
+    } else {
+      // Web Share API 미지원 시 클립보드 복사
+      copyToClipboard(shareText);
+    }
+  };
 
-    Kakao.Share.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "2026 강청 겨울 수련회",
-        description: `${state.userName}님의 미션 현황\n${description}`,
-        imageUrl: imageUrl,
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
-      },
-      buttons: [
-        {
-          title: "미션 확인하기",
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
-          },
-        },
-      ],
-    });
+  /**
+   * Copy text to clipboard
+   */
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => showToast("클립보드에 복사되었습니다! 📋"))
+      .catch(() => showToast("복사에 실패했습니다"));
   };
 
   /**

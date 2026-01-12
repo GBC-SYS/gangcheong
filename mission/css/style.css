@@ -509,17 +509,11 @@ ul {
    ========================================================================== */
 
 .section-page {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  height: 100vh;
-  background: var(--color-bg);
-  z-index: 200;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
+  overflow-y: auto;
 }
 
 .section-page__header {
@@ -550,6 +544,7 @@ ul {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
   color: var(--color-text);
+  margin-bottom: var(--space-2);
 }
 
 .section-page__content {
