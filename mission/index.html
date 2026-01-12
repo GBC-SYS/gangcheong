@@ -96,9 +96,15 @@
       <main class="main">
         <!-- Day 탭 -->
         <div class="day-tabs">
-          <button class="day-tab day-tab--active" data-day="1">DAY 1</button>
-          <button class="day-tab" data-day="2">DAY 2</button>
-          <button class="day-tab" data-day="3">DAY 3</button>
+          <button class="day-tab day-tab--active" data-day="1">
+            DAY 1 <br />(2월 6일 금)
+          </button>
+          <button class="day-tab" data-day="2">
+            <span>DAY 2 </span><br />(2월 7일 토)
+          </button>
+          <button class="day-tab" data-day="3">
+            <span>DAY 3 </span><br />(2월 8일 주일)
+          </button>
         </div>
 
         <div id="missionContainer" class="mission-container">
@@ -130,20 +136,24 @@
         </div>
       </div>
 
+      <!-- SVG 그라데이션 정의 -->
+      <svg width="0" height="0" style="position: absolute">
+        <defs>
+          <linearGradient id="navGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e91e63" />
+            <stop offset="50%" stop-color="#ff5722" />
+            <stop offset="100%" stop-color="#ff9800" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <!-- 하단 네비게이션 -->
       <nav class="bottom-nav">
         <button
           class="bottom-nav__btn bottom-nav__btn--active"
           data-tab="missions"
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <path d="M9 11l3 3L22 4"></path>
             <path
               d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
@@ -152,14 +162,7 @@
           <span>미션</span>
         </button>
         <button class="bottom-nav__btn" data-tab="testimony">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <path
               d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
             ></path>
@@ -170,14 +173,7 @@
           <span>간증문</span>
         </button>
         <button class="bottom-nav__btn" data-tab="survey">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <path
               d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
             ></path>

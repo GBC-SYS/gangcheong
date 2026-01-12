@@ -48,7 +48,6 @@
   --color-border: #333333;
 
   /* 악센트 색상 (LOVE in ACTION) */
-  --color-pink: #e91e63;
   --color-red: #f44336;
   --color-blue: #2196f3;
   --color-yellow: #ffeb3b;
@@ -238,7 +237,7 @@ ul {
 
 .intro__input:focus {
   outline: none;
-  border-color: var(--color-pink);
+  border-image: var(--gradient-primary) 1;
   box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
 }
 
@@ -317,7 +316,10 @@ ul {
 }
 
 .header__greeting span {
-  color: var(--color-pink);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .share-btn {
@@ -328,7 +330,7 @@ ul {
   width: auto;
   height: auto;
   padding: 8px 16px;
-  background: var(--color-pink);
+  background: var(--gradient-primary);
   border: none;
   border-radius: var(--radius-md);
   color: white;
@@ -409,7 +411,7 @@ ul {
   cursor: not-allowed;
 }
 
-.day-tab--disabled::after {
+.day-tab--disabled span::after {
   content: "🔒";
   margin-left: var(--space-1);
   font-size: var(--text-xs);
@@ -418,8 +420,11 @@ ul {
 .day-tab:not(.day-tab--active):not(.day-tab--disabled):not(
     .day-tab--expired
   ):hover {
-  border-color: var(--color-pink);
-  color: var(--color-pink);
+  border-image: var(--gradient-primary) 1;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* 종료된 Day 탭 */
@@ -429,7 +434,7 @@ ul {
   text-decoration: line-through;
 }
 
-.day-tab--expired::after {
+.day-tab--expired span::after {
   content: "✓";
   margin-left: var(--space-1);
   font-size: var(--text-xs);
@@ -553,8 +558,23 @@ ul {
   font-size: var(--text-xs);
 }
 
+.bottom-nav__btn svg,
+.bottom-nav__btn svg path,
+.bottom-nav__btn svg line,
+.bottom-nav__btn svg polyline {
+  stroke: var(--color-text-secondary);
+}
+
 .bottom-nav__btn--active {
-  color: var(--color-pink);
+  color: #ffffff;
+  font-weight: var(--font-bold);
+}
+
+.bottom-nav__btn--active svg,
+.bottom-nav__btn--active svg path,
+.bottom-nav__btn--active svg line,
+.bottom-nav__btn--active svg polyline {
+  stroke: #ffffff;
 }
 
 /* ==========================================================================
@@ -714,7 +734,7 @@ ul {
 
 .input:focus {
   outline: none;
-  border-color: var(--color-pink);
+  border-image: var(--gradient-primary) 1;
   box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
 }
 
@@ -737,7 +757,6 @@ textarea.input {
   align-items: center;
   justify-content: center;
   padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
   font-weight: var(--font-semibold);
   font-size: var(--text-md);
   min-height: var(--touch-min);
@@ -750,19 +769,13 @@ textarea.input {
   border: none;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
-}
-
 .btn-secondary {
-  background: transparent;
-  color: var(--color-pink);
-  border: 1px solid var(--color-pink);
-}
-
-.btn-secondary:hover {
-  background: rgba(233, 30, 99, 0.1);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border: 1px solid transparent;
+  border-image: var(--gradient-primary) 1;
 }
 
 /* ==========================================================================
@@ -820,7 +833,7 @@ textarea.input {
 .survey-option input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  accent-color: var(--color-pink);
+  accent-color: #e91e63; /* gradient not supported for accent-color */
 }
 
 .survey-option span {
@@ -841,6 +854,8 @@ textarea.input {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  width: fit-content;
+  white-space: nowrap;
   background: var(--color-bg-card);
   color: var(--color-text);
   padding: var(--space-3) var(--space-5);
