@@ -62,28 +62,54 @@
 - 전역 변수 최소화
 - 함수형 패턴 사용 (순수 함수, 불변성)
 - async/await로 비동기 처리
+- **정의 함수는 상단에, 실행 함수는 하단에 배치**
 
 ```javascript
 // 함수형 패턴 예시
 const createApp = (initialState = {}) => {
+  // ==========================================================================
+  // State (상단)
+  // ==========================================================================
   const state = { ...initialState };
 
+  // ==========================================================================
+  // Utility Functions (정의 함수 - 상단)
+  // ==========================================================================
   const getState = () => ({ ...state });
 
   const setState = (newState) => {
     Object.assign(state, newState);
   };
 
+  // ==========================================================================
+  // Feature Functions (정의 함수 - 상단)
+  // ==========================================================================
   const handleUpload = async (file) => {
     /* ... */
   };
 
-  return { getState, setState, handleUpload };
+  const handleSubmit = (data) => {
+    /* ... */
+  };
+
+  // ==========================================================================
+  // Bootstrap Functions (실행 함수 - 하단)
+  // ==========================================================================
+  const bindEvents = () => {
+    /* 이벤트 바인딩 */
+  };
+
+  const init = () => {
+    bindEvents();
+  };
+
+  return { init, getState, setState, handleUpload };
 };
 
+// Initialize app when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   const app = createApp({ isLoading: false });
-  // app.handleUpload(file);
+  app.init();
 });
 ```
 

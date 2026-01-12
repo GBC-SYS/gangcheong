@@ -3,7 +3,10 @@
  */
 
 const App = (() => {
-  // 수련회 일정 설정 (각 Day는 해당 날짜에만 활성화, 다음 날 열리면 이전 Day 잠김)
+  // ==========================================================================
+  // Constants & State
+  // ==========================================================================
+
   const RETREAT_SCHEDULE = {
     1: {
       start: new Date("2026-01-12T06:00:00"),
@@ -19,7 +22,6 @@ const App = (() => {
     },
   };
 
-  // State
   const state = {
     userName: "",
     missions: [],
@@ -28,183 +30,53 @@ const App = (() => {
     currentDay: 1,
   };
 
-  // DOM Elements
   const elements = {};
 
-  /**
-   * Initialize the app
-   */
-  const init = () => {
-    cacheElements();
-    bindEvents();
-    checkExistingUser();
+  // ==========================================================================
+  // Utility Functions
+  // ==========================================================================
+
+  const showToast = (message) => {
+    const existingToast = document.querySelector(".toast");
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
   };
 
-  /**
-   * Cache DOM elements
-   */
-  const cacheElements = () => {
-    // Intro
-    elements.intro = document.getElementById("intro");
-    elements.userNameInput = document.getElementById("userName");
-    elements.startBtn = document.getElementById("startBtn");
-
-    // App
-    elements.app = document.getElementById("app");
-    elements.header = document.getElementById("header");
-    elements.missionContainer = document.getElementById("missionContainer");
-
-    // Day tabs
-    elements.dayTabs = document.querySelectorAll(".day-tab");
-
-    // Navigation
-    elements.bottomNavBtns = document.querySelectorAll(".bottom-nav__btn");
-
-    // Section pages
-    elements.testimonyPage = document.getElementById("testimony");
-    elements.surveyPage = document.getElementById("survey");
-    elements.testimonyText = document.getElementById("testimonyText");
-    elements.saveTestimonyBtn = document.getElementById("saveTestimonyBtn");
-    elements.testimonyForm = document.querySelector(".testimony-form");
-    elements.surveyForm = document.getElementById("surveyForm");
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => showToast("클립보드에 복사되었습니다! 📋"))
+      .catch(() => showToast("복사에 실패했습니다"));
   };
 
-  /**
-   * Bind event listeners
-   */
-  const bindEvents = () => {
-    // Start button
-    elements.startBtn.addEventListener("click", handleStart);
+  // ==========================================================================
+  // State Management
+  // ==========================================================================
 
-    // Enter key on name input
-    elements.userNameInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") handleStart();
-    });
-
-    // Day tabs
-    elements.dayTabs.forEach((tab) => {
-      tab.addEventListener("click", () =>
-        handleDayChange(parseInt(tab.dataset.day))
-      );
-    });
-
-    // Bottom navigation
-    elements.bottomNavBtns.forEach((btn) => {
-      btn.addEventListener("click", () => handleTabChange(btn.dataset.tab));
-    });
-
-    // Testimony form
-    if (elements.testimonyForm) {
-      elements.testimonyForm.addEventListener("submit", handleTestimonySubmit);
-    }
-    if (elements.saveTestimonyBtn) {
-      elements.saveTestimonyBtn.addEventListener("click", handleTestimonySave);
-    }
-
-    // Survey form
-    if (elements.surveyForm) {
-      elements.surveyForm.addEventListener("submit", handleSurveySubmit);
+  const loadState = () => {
+    const saved = localStorage.getItem("completed_missions");
+    if (saved) {
+      state.completedMissions = new Set(JSON.parse(saved));
     }
   };
 
-  /**
-   * Check if user already exists
-   */
-  const checkExistingUser = () => {
-    const savedName = localStorage.getItem("userName");
-    if (savedName) {
-      state.userName = savedName;
-      showApp();
-    }
+  const saveState = () => {
+    localStorage.setItem(
+      "completed_missions",
+      JSON.stringify([...state.completedMissions])
+    );
   };
 
-  /**
-   * Handle start button click
-   */
-  const handleStart = () => {
-    const name = elements.userNameInput.value.trim();
-    if (!name) {
-      elements.userNameInput.focus();
-      showToast("이름을 입력해주세요");
-      return;
-    }
+  // ==========================================================================
+  // Day Functions
+  // ==========================================================================
 
-    state.userName = name;
-    localStorage.setItem("userName", name);
-    showApp();
-  };
-
-  /**
-   * Show main app
-   */
-  const showApp = () => {
-    elements.intro.style.display = "none";
-    elements.app.style.display = "flex";
-
-    // Header 컴포넌트 렌더링
-    Header.setOnShareClick(handleShare);
-    Header.render(elements.header, { userName: state.userName });
-
-    // 현재 열린 Day 중 가장 최근 것으로 설정
-    state.currentDay = getLatestUnlockedDay();
-
-    loadState();
-    loadMissions();
-    updateDayTabs();
-  };
-
-  /**
-   * Get the currently active day (현재 활성화된 Day 찾기)
-   */
-  const getLatestUnlockedDay = () => {
-    for (let day = 1; day <= 3; day++) {
-      if (getDayStatus(day) === "active") {
-        return day;
-      }
-    }
-    // 활성화된 Day가 없으면 가장 최근 종료된 Day 또는 Day 1
-    for (let day = 3; day >= 1; day--) {
-      if (getDayStatus(day) === "expired") {
-        return day; // 종료된 Day 보여주기 (비활성 상태)
-      }
-    }
-    return 1; // 수련회 시작 전이면 Day 1
-  };
-
-  /**
-   * Handle tab change
-   */
-  const handleTabChange = (tab) => {
-    state.currentTab = tab;
-
-    // Update nav buttons
-    elements.bottomNavBtns.forEach((btn) => {
-      btn.classList.toggle("bottom-nav__btn--active", btn.dataset.tab === tab);
-    });
-
-    // Show/hide pages
-    const mainContent = document.querySelector(".main");
-
-    if (tab === "missions") {
-      mainContent.style.display = "block";
-      elements.testimonyPage.style.display = "none";
-      elements.surveyPage.style.display = "none";
-    } else if (tab === "testimony") {
-      mainContent.style.display = "none";
-      elements.testimonyPage.style.display = "flex";
-      elements.surveyPage.style.display = "none";
-      loadTestimonyDraft();
-    } else if (tab === "survey") {
-      mainContent.style.display = "none";
-      elements.testimonyPage.style.display = "none";
-      elements.surveyPage.style.display = "flex";
-      loadSurvey();
-    }
-  };
-
-  /**
-   * Get day status: 'locked' (아직 안 열림), 'active' (현재 활성), 'expired' (종료됨)
-   */
   const getDayStatus = (day) => {
     const now = new Date();
     const schedule = RETREAT_SCHEDULE[day];
@@ -213,9 +85,20 @@ const App = (() => {
     return "active";
   };
 
-  /**
-   * Update day tabs UI (활성화/비활성화 상태)
-   */
+  const getLatestUnlockedDay = () => {
+    for (let day = 1; day <= 3; day++) {
+      if (getDayStatus(day) === "active") {
+        return day;
+      }
+    }
+    for (let day = 3; day >= 1; day--) {
+      if (getDayStatus(day) === "expired") {
+        return day;
+      }
+    }
+    return 1;
+  };
+
   const updateDayTabs = () => {
     elements.dayTabs.forEach((tab) => {
       const day = parseInt(tab.dataset.day);
@@ -228,13 +111,9 @@ const App = (() => {
     });
   };
 
-  /**
-   * Handle day tab change
-   */
   const handleDayChange = (day) => {
     const status = getDayStatus(day);
 
-    // 잠긴 탭은 클릭 불가
     if (status === "locked") {
       const schedule = RETREAT_SCHEDULE[day];
       const month = schedule.start.getMonth() + 1;
@@ -243,7 +122,6 @@ const App = (() => {
       return;
     }
 
-    // 종료된 탭도 클릭 불가
     if (status === "expired") {
       showToast(`DAY ${day}은 종료되었습니다 ⏰`);
       return;
@@ -254,51 +132,10 @@ const App = (() => {
     renderMissions();
   };
 
-  /**
-   * Load missions from JSON
-   */
-  const loadMissions = async () => {
-    try {
-      const response = await fetch("./data/missions.json");
-      if (response.ok) {
-        const data = await response.json();
-        state.missions = data.missions || [];
-      }
-    } catch (error) {
-      state.missions = [];
-    }
-    renderMissions();
-  };
+  // ==========================================================================
+  // Mission Functions
+  // ==========================================================================
 
-  /**
-   * Render missions for current day
-   */
-  const renderMissions = () => {
-    const dayMissions = state.missions.filter(
-      (m) => m.day === state.currentDay
-    );
-
-    const html = dayMissions
-      .map((mission) => renderMissionItem(mission))
-      .join("");
-
-    elements.missionContainer.innerHTML = html;
-
-    // Bind click events
-    elements.missionContainer
-      .querySelectorAll(".mission-item")
-      .forEach((item) => {
-        item.addEventListener("click", () =>
-          handleMissionToggle(parseInt(item.dataset.id))
-        );
-      });
-
-    updateProgress();
-  };
-
-  /**
-   * Render single mission item
-   */
   const renderMissionItem = (mission) => {
     const isCompleted = state.completedMissions.has(mission.id);
     return `
@@ -313,9 +150,47 @@ const App = (() => {
     `;
   };
 
-  /**
-   * Handle mission toggle
-   */
+  const updateProgress = () => {
+    const total = state.missions.length;
+    const completed = state.completedMissions.size;
+    Header.updateProgress({ completed, total });
+  };
+
+  const renderMissions = () => {
+    const dayMissions = state.missions.filter(
+      (m) => m.day === state.currentDay
+    );
+
+    const html = dayMissions
+      .map((mission) => renderMissionItem(mission))
+      .join("");
+
+    elements.missionContainer.innerHTML = html;
+
+    elements.missionContainer
+      .querySelectorAll(".mission-item")
+      .forEach((item) => {
+        item.addEventListener("click", () =>
+          handleMissionToggle(parseInt(item.dataset.id))
+        );
+      });
+
+    updateProgress();
+  };
+
+  const loadMissions = async () => {
+    try {
+      const response = await fetch("./data/missions.json");
+      if (response.ok) {
+        const data = await response.json();
+        state.missions = data.missions || [];
+      }
+    } catch (error) {
+      state.missions = [];
+    }
+    renderMissions();
+  };
+
   const handleMissionToggle = (missionId) => {
     if (state.completedMissions.has(missionId)) {
       state.completedMissions.delete(missionId);
@@ -332,26 +207,16 @@ const App = (() => {
     showToast(message);
   };
 
-  /**
-   * Update progress display
-   */
-  const updateProgress = () => {
-    const total = state.missions.length;
-    const completed = state.completedMissions.size;
+  // ==========================================================================
+  // Testimony Functions
+  // ==========================================================================
 
-    Header.updateProgress({ completed, total });
-  };
-
-  /**
-   * Load testimony (제출된 간증문 또는 임시저장)
-   */
   const loadTestimonyDraft = () => {
     const submitted = localStorage.getItem("testimony_submitted");
     const draft = localStorage.getItem("testimony_draft");
 
     if (elements.testimonyText) {
       if (submitted) {
-        // 이미 제출된 간증문이 있으면 표시
         elements.testimonyText.value = submitted;
         elements.testimonyText.disabled = true;
         elements.saveTestimonyBtn.style.display = "none";
@@ -359,7 +224,6 @@ const App = (() => {
           ".testimony-form button[type='submit']"
         ).textContent = "수정하기";
       } else if (draft) {
-        // 임시저장된 내용 불러오기
         elements.testimonyText.value = draft;
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
@@ -367,7 +231,6 @@ const App = (() => {
           ".testimony-form button[type='submit']"
         ).textContent = "제출하기";
       } else {
-        // 새로 작성
         elements.testimonyText.value = "";
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
@@ -378,9 +241,6 @@ const App = (() => {
     }
   };
 
-  /**
-   * Handle testimony save
-   */
   const handleTestimonySave = () => {
     const content = elements.testimonyText.value.trim();
     if (content) {
@@ -391,16 +251,12 @@ const App = (() => {
     }
   };
 
-  /**
-   * Handle testimony submit
-   */
   const handleTestimonySubmit = (e) => {
     e.preventDefault();
 
     const isSubmitted = localStorage.getItem("testimony_submitted");
     const isDisabled = elements.testimonyText.disabled;
 
-    // 이미 제출된 상태에서 "수정하기" 클릭 시 수정 모드로 전환
     if (isSubmitted && isDisabled) {
       elements.testimonyText.disabled = false;
       elements.saveTestimonyBtn.style.display = "";
@@ -419,7 +275,6 @@ const App = (() => {
       return;
     }
 
-    // 로컬스토리지에 저장
     localStorage.setItem("testimony_submitted", content);
     localStorage.removeItem("testimony_draft");
 
@@ -429,15 +284,14 @@ const App = (() => {
       showToast("간증문이 제출되었습니다! 🙏");
     }
 
-    // Return to missions
     setTimeout(() => handleTabChange("missions"), 1500);
   };
 
-  /**
-   * Load survey
-   */
+  // ==========================================================================
+  // Survey Functions
+  // ==========================================================================
+
   const loadSurvey = async () => {
-    // Simple survey for now
     const surveyHtml = `
       <div class="survey-question">
         <p class="survey-question__title">1. 이번 수련회에서 가장 좋았던 점은?</p>
@@ -478,9 +332,6 @@ const App = (() => {
     elements.surveyForm.innerHTML = surveyHtml;
   };
 
-  /**
-   * Handle survey submit
-   */
   const handleSurveySubmit = (e) => {
     e.preventDefault();
 
@@ -495,59 +346,34 @@ const App = (() => {
     // TODO: Submit to Supabase
     showToast("설문이 제출되었습니다! 감사합니다 🙏");
 
-    // Return to missions
     setTimeout(() => handleTabChange("missions"), 1500);
   };
 
-  /**
-   * Load state from localStorage
-   */
-  const loadState = () => {
-    const saved = localStorage.getItem("completed_missions");
-    if (saved) {
-      state.completedMissions = new Set(JSON.parse(saved));
-    }
-  };
+  // ==========================================================================
+  // Share Functions
+  // ==========================================================================
 
-  /**
-   * Save state to localStorage
-   */
-  const saveState = () => {
-    localStorage.setItem(
-      "completed_missions",
-      JSON.stringify([...state.completedMissions])
-    );
-  };
-
-  /**
-   * Handle share button click (Web Share API)
-   */
   const handleShare = async () => {
     const completed = state.completedMissions.size;
     const total = state.missions.length;
     const testimony = localStorage.getItem("testimony_submitted");
 
-    // 완료한 미션 목록 가져오기
     const completedMissionTitles = state.missions
       .filter((m) => state.completedMissions.has(m.id))
       .map((m) => `✅ ${m.title}`)
       .join("\n");
 
-    // 공유 메시지 구성
     let shareText = `${state.userName}님의 미션 현황\n`;
     shareText += `🎯 ${completed}/${total}개 미션 완료!\n\n`;
 
-    // 완료한 미션 목록 추가
     if (completedMissionTitles) {
       shareText += `📋 완료한 미션:\n${completedMissionTitles}\n\n`;
     }
 
-    // 간증문이 있으면 추가
     if (testimony) {
       shareText += `✍️ 간증문:\n"${testimony}"\n\n`;
     }
 
-    // Web Share API 사용 (모바일에서 카카오톡 등 앱 선택 가능)
     if (navigator.share) {
       try {
         await navigator.share({
@@ -555,40 +381,149 @@ const App = (() => {
           text: shareText,
         });
       } catch (error) {
-        // 사용자가 공유 취소한 경우
         if (error.name !== "AbortError") {
           copyToClipboard(shareText);
         }
       }
     } else {
-      // Web Share API 미지원 시 클립보드 복사
       copyToClipboard(shareText);
     }
   };
 
-  /**
-   * Copy text to clipboard
-   */
-  const copyToClipboard = (text) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => showToast("클립보드에 복사되었습니다! 📋"))
-      .catch(() => showToast("복사에 실패했습니다"));
+  // ==========================================================================
+  // Navigation Functions
+  // ==========================================================================
+
+  const handleTabChange = (tab) => {
+    state.currentTab = tab;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    elements.bottomNavBtns.forEach((btn) => {
+      btn.classList.toggle("bottom-nav__btn--active", btn.dataset.tab === tab);
+    });
+
+    const mainContent = document.querySelector(".main");
+
+    if (tab === "missions") {
+      mainContent.style.display = "block";
+      elements.testimonyPage.style.display = "none";
+      elements.surveyPage.style.display = "none";
+    } else if (tab === "testimony") {
+      mainContent.style.display = "none";
+      elements.testimonyPage.style.display = "flex";
+      elements.surveyPage.style.display = "none";
+      loadTestimonyDraft();
+    } else if (tab === "survey") {
+      mainContent.style.display = "none";
+      elements.testimonyPage.style.display = "none";
+      elements.surveyPage.style.display = "flex";
+      loadSurvey();
+    }
   };
 
-  /**
-   * Show toast notification
-   */
-  const showToast = (message) => {
-    const existingToast = document.querySelector(".toast");
-    if (existingToast) existingToast.remove();
+  // ==========================================================================
+  // App Initialization Functions
+  // ==========================================================================
 
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.textContent = message;
-    document.body.appendChild(toast);
+  const handleStart = () => {
+    const name = elements.userNameInput.value.trim();
+    if (!name) {
+      elements.userNameInput.focus();
+      showToast("이름을 입력해주세요");
+      return;
+    }
 
-    setTimeout(() => toast.remove(), 3000);
+    state.userName = name;
+    localStorage.setItem("userName", name);
+    showApp();
+  };
+
+  const showApp = () => {
+    elements.intro.style.display = "none";
+    elements.app.style.display = "flex";
+
+    Header.setOnShareClick(handleShare);
+    Header.render(elements.header, { userName: state.userName });
+
+    state.currentDay = getLatestUnlockedDay();
+
+    loadState();
+    loadMissions();
+    updateDayTabs();
+  };
+
+  const checkExistingUser = () => {
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+      state.userName = savedName;
+      showApp();
+    }
+  };
+
+  // ==========================================================================
+  // Bootstrap Functions (실행 함수)
+  // ==========================================================================
+
+  const cacheElements = () => {
+    // Intro
+    elements.intro = document.getElementById("intro");
+    elements.userNameInput = document.getElementById("userName");
+    elements.startBtn = document.getElementById("startBtn");
+
+    // App
+    elements.app = document.getElementById("app");
+    elements.header = document.getElementById("header");
+    elements.missionContainer = document.getElementById("missionContainer");
+
+    // Day tabs
+    elements.dayTabs = document.querySelectorAll(".day-tab");
+
+    // Navigation
+    elements.bottomNavBtns = document.querySelectorAll(".bottom-nav__btn");
+
+    // Section pages
+    elements.testimonyPage = document.getElementById("testimony");
+    elements.surveyPage = document.getElementById("survey");
+    elements.testimonyText = document.getElementById("testimonyText");
+    elements.saveTestimonyBtn = document.getElementById("saveTestimonyBtn");
+    elements.testimonyForm = document.querySelector(".testimony-form");
+    elements.surveyForm = document.getElementById("surveyForm");
+  };
+
+  const bindEvents = () => {
+    elements.startBtn.addEventListener("click", handleStart);
+
+    elements.userNameInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") handleStart();
+    });
+
+    elements.dayTabs.forEach((tab) => {
+      tab.addEventListener("click", () =>
+        handleDayChange(parseInt(tab.dataset.day))
+      );
+    });
+
+    elements.bottomNavBtns.forEach((btn) => {
+      btn.addEventListener("click", () => handleTabChange(btn.dataset.tab));
+    });
+
+    if (elements.testimonyForm) {
+      elements.testimonyForm.addEventListener("submit", handleTestimonySubmit);
+    }
+    if (elements.saveTestimonyBtn) {
+      elements.saveTestimonyBtn.addEventListener("click", handleTestimonySave);
+    }
+
+    if (elements.surveyForm) {
+      elements.surveyForm.addEventListener("submit", handleSurveySubmit);
+    }
+  };
+
+  const init = () => {
+    cacheElements();
+    bindEvents();
+    checkExistingUser();
   };
 
   return { init };
