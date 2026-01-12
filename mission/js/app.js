@@ -9,12 +9,12 @@ const App = (() => {
 
   const RETREAT_SCHEDULE = {
     1: {
-      start: new Date("2026-01-11T07:00:00"),
-      end: new Date("2026-01-11T24:00:00"),
-    },
-    2: {
       start: new Date("2026-01-12T07:00:00"),
       end: new Date("2026-01-12T24:00:00"),
+    },
+    2: {
+      start: new Date("2026-01-13T07:00:00"),
+      end: new Date("2026-01-13T24:00:00"),
     },
     3: {
       start: new Date("2026-01-14T07:00:00"),
