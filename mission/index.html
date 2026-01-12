@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="강남중앙침례교회 청년부 수련회 미션 체크리스트"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="수련회 미션 체크리스트" />
+    <meta
+      property="og:description"
+      content="2박 3일 수련회 미션을 완료하세요!"
+    />
+    <meta property="og:type" content="website" />
+
+    <title>강청 | 수련회 미션 체크리스트</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- 인트로 화면 -->
+    <div id="intro" class="intro">
+      <div class="intro__card">
+        <div class="intro__icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="intro__title">2026 강청 겨울 수련회</h1>
+        <p class="intro__subtitle">2박 3일 미션 체크리스트</p>
+
+        <div class="intro__form">
+          <label class="intro__label">이름을 입력해주세요</label>
+          <input
+            type="text"
+            id="userName"
+            class="intro__input"
+            placeholder="홍길동"
+          />
+        </div>
+
+        <button id="startBtn" class="intro__btn">
+          시작하기
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 메인 앱 -->
+    <div id="app" class="app" style="display: none">
+      <!-- 헤더 -->
+      <header class="header">
+        <div class="header__top">
+          <p class="header__greeting">
+            안녕하세요, <span id="displayName">청년</span>님!
+          </p>
+          <button id="shareBtn" class="share-btn" aria-label="공유하기">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="header__progress">
+          <span class="header__progress-text"
+            ><span id="completedCount">0</span>/<span id="totalCount">0</span>
+            완료</span
+          >
+          <div class="header__progress-bar">
+            <div id="progressFill" class="header__progress-fill"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 미션 체크리스트 -->
+      <main class="main">
+        <!-- Day 탭 -->
+        <div class="day-tabs">
+          <button class="day-tab day-tab--active" data-day="1">DAY 1</button>
+          <button class="day-tab" data-day="2">DAY 2</button>
+          <button class="day-tab" data-day="3">DAY 3</button>
+        </div>
+
+        <div id="missionContainer" class="mission-container">
+          <!-- 미션 아이템들이 동적으로 추가됩니다 -->
+        </div>
+      </main>
+
+      <!-- 하단 네비게이션 -->
+      <nav class="bottom-nav">
+        <button
+          class="bottom-nav__btn bottom-nav__btn--active"
+          data-tab="missions"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 11l3 3L22 4"></path>
+            <path
+              d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+            ></path>
+          </svg>
+          <span>미션</span>
+        </button>
+        <button class="bottom-nav__btn" data-tab="testimony">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            ></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span>간증문</span>
+        </button>
+        <button class="bottom-nav__btn" data-tab="survey">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            ></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          <span>설문</span>
+        </button>
+      </nav>
+
+      <!-- 간증문 섹션 -->
+      <div id="testimony" class="section-page" style="display: none">
+        <div class="section-page__header">
+          <button class="back-btn" data-back="missions">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h2 class="section-page__title">간증문 작성</h2>
+        </div>
+        <div class="section-page__content">
+          <p class="section-page__desc">수련회에서 느낀 은혜를 기록해주세요.</p>
+          <form class="testimony-form">
+            <textarea
+              id="testimonyText"
+              class="input testimony-form__textarea"
+              placeholder="이번 수련회를 통해 느낀 점, 깨달은 점을 자유롭게 작성해주세요..."
+              rows="10"
+            ></textarea>
+            <div class="testimony-form__actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="saveTestimonyBtn"
+              >
+                임시저장
+              </button>
+              <button type="submit" class="btn btn-primary">제출하기</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- 설문 섹션 -->
+      <div id="survey" class="section-page" style="display: none">
+        <div class="section-page__header">
+          <button class="back-btn" data-back="missions">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h2 class="section-page__title">설문조사</h2>
+        </div>
+        <div class="section-page__content">
+          <p class="section-page__desc">수련회 장단점을 알려주세요.</p>
+          <form id="surveyForm" class="survey-form">
+            <!-- 설문 문항이 동적으로 추가됩니다 -->
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+  </body>
+</html>
