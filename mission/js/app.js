@@ -366,12 +366,32 @@ const App = (() => {
   };
 
   /**
-   * Load testimony draft
+   * Load testimony (제출된 간증문 또는 임시저장)
    */
   const loadTestimonyDraft = () => {
+    const submitted = localStorage.getItem("testimony_submitted");
     const draft = localStorage.getItem("testimony_draft");
-    if (draft && elements.testimonyText) {
-      elements.testimonyText.value = draft;
+
+    if (elements.testimonyText) {
+      if (submitted) {
+        // 이미 제출된 간증문이 있으면 표시
+        elements.testimonyText.value = submitted;
+        elements.testimonyText.disabled = true;
+        elements.saveTestimonyBtn.style.display = "none";
+        document.querySelector(".testimony-form button[type='submit']").textContent = "수정하기";
+      } else if (draft) {
+        // 임시저장된 내용 불러오기
+        elements.testimonyText.value = draft;
+        elements.testimonyText.disabled = false;
+        elements.saveTestimonyBtn.style.display = "";
+        document.querySelector(".testimony-form button[type='submit']").textContent = "제출하기";
+      } else {
+        // 새로 작성
+        elements.testimonyText.value = "";
+        elements.testimonyText.disabled = false;
+        elements.saveTestimonyBtn.style.display = "";
+        document.querySelector(".testimony-form button[type='submit']").textContent = "제출하기";
+      }
     }
   };
 
@@ -393,6 +413,20 @@ const App = (() => {
    */
   const handleTestimonySubmit = (e) => {
     e.preventDefault();
+
+    const isSubmitted = localStorage.getItem("testimony_submitted");
+    const isDisabled = elements.testimonyText.disabled;
+
+    // 이미 제출된 상태에서 "수정하기" 클릭 시 수정 모드로 전환
+    if (isSubmitted && isDisabled) {
+      elements.testimonyText.disabled = false;
+      elements.saveTestimonyBtn.style.display = "";
+      document.querySelector(".testimony-form button[type='submit']").textContent = "수정 완료";
+      elements.testimonyText.focus();
+      showToast("수정 모드로 전환되었습니다 ✏️");
+      return;
+    }
+
     const content = elements.testimonyText.value.trim();
 
     if (!content) {
@@ -400,9 +434,15 @@ const App = (() => {
       return;
     }
 
-    // TODO: Submit to Supabase
+    // 로컬스토리지에 저장
+    localStorage.setItem("testimony_submitted", content);
     localStorage.removeItem("testimony_draft");
-    showToast("간증문이 제출되었습니다! 🙏");
+
+    if (isSubmitted) {
+      showToast("간증문이 수정되었습니다! 🙏");
+    } else {
+      showToast("간증문이 제출되었습니다! 🙏");
+    }
 
     // Return to missions
     setTimeout(() => handleTabChange("missions"), 1500);
@@ -500,10 +540,24 @@ const App = (() => {
   const handleShare = async () => {
     const completed = state.completedMissions.size;
     const total = state.missions.length;
+    const testimony = localStorage.getItem("testimony_submitted");
+
+    // 공유 메시지 구성
+    let shareText = `🎯 ${state.userName}님이 ${completed}/${total}개 미션을 완료했어요!`;
+
+    // 간증문이 있으면 추가 (100자 미리보기)
+    if (testimony) {
+      const preview = testimony.length > 100
+        ? testimony.substring(0, 100) + "..."
+        : testimony;
+      shareText += `\n\n✍️ 간증문:\n"${preview}"`;
+    }
+
+    shareText += `\n\n수련회 미션에 도전해보세요 💪`;
 
     const shareData = {
       title: "2025 겨울 수련회 미션",
-      text: `🎯 ${state.userName}님이 ${completed}/${total}개 미션을 완료했어요!\n\n수련회 미션에 도전해보세요 💪`,
+      text: shareText,
       url: window.location.href,
     };
 
