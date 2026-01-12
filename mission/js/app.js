@@ -545,20 +545,14 @@ const App = (() => {
     // 공유 메시지 구성
     let shareText = `🎯 ${state.userName}님이 ${completed}/${total}개 미션을 완료했어요!`;
 
-    // 간증문이 있으면 추가 (100자 미리보기)
+    // 간증문이 있으면 추가
     if (testimony) {
-      const preview = testimony.length > 100
-        ? testimony.substring(0, 100) + "..."
-        : testimony;
-      shareText += `\n\n✍️ 간증문:\n"${preview}"`;
+      shareText += `\n\n✍️ 간증문:\n"${testimony}"`;
     }
-
-    shareText += `\n\n수련회 미션에 도전해보세요 💪`;
 
     const shareData = {
       title: "2025 겨울 수련회 미션",
       text: shareText,
-      url: window.location.href,
     };
 
     // Web Share API 지원 확인
@@ -580,12 +574,10 @@ const App = (() => {
    * Fallback share (클립보드 복사)
    */
   const fallbackShare = (shareData) => {
-    const text = `${shareData.text}\n${shareData.url}`;
-
     if (navigator.clipboard) {
       navigator.clipboard
-        .writeText(text)
-        .then(() => showToast("링크가 복사되었습니다! 📋"))
+        .writeText(shareData.text)
+        .then(() => showToast("클립보드에 복사되었습니다! 📋"))
         .catch(() => showToast("공유하기를 사용할 수 없습니다"));
     } else {
       showToast("공유하기를 사용할 수 없습니다");
