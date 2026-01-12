@@ -402,36 +402,51 @@ const App = (() => {
 
   const handleTabChange = (tab) => {
     state.currentTab = tab;
-
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     elements.bottomNavBtns.forEach((btn) => {
       btn.classList.toggle("bottom-nav__btn--active", btn.dataset.tab === tab);
     });
 
-    const mainContent = document.querySelector(".main");
+    const tabConfig = {
+      missions: {
+        main: "block",
+        testimony: "none",
+        survey: "none",
+        shareBtn: "block",
+        onEnter: null,
+      },
+      testimony: {
+        main: "none",
+        testimony: "flex",
+        survey: "none",
+        shareBtn: "none",
+        onEnter: loadTestimonyDraft,
+      },
+      survey: {
+        main: "none",
+        testimony: "none",
+        survey: "flex",
+        shareBtn: "none",
+        onEnter: loadSurvey,
+      },
+    };
+
+    const config = tabConfig[tab];
+    if (!config) return;
+
+    document.querySelector(".main").style.display = config.main;
+    elements.testimonyPage.style.display = config.testimony;
+    elements.surveyPage.style.display = config.survey;
+
     const floatingShareWrapper = document.querySelector(
       ".floating-share-wrapper"
     );
-
-    if (tab === "missions") {
-      mainContent.style.display = "block";
-      elements.testimonyPage.style.display = "none";
-      elements.surveyPage.style.display = "none";
-      if (floatingShareWrapper) floatingShareWrapper.style.display = "block";
-    } else if (tab === "testimony") {
-      mainContent.style.display = "none";
-      elements.testimonyPage.style.display = "flex";
-      elements.surveyPage.style.display = "none";
-      if (floatingShareWrapper) floatingShareWrapper.style.display = "none";
-      loadTestimonyDraft();
-    } else if (tab === "survey") {
-      mainContent.style.display = "none";
-      elements.testimonyPage.style.display = "none";
-      elements.surveyPage.style.display = "flex";
-      if (floatingShareWrapper) floatingShareWrapper.style.display = "none";
-      loadSurvey();
+    if (floatingShareWrapper) {
+      floatingShareWrapper.style.display = config.shareBtn;
     }
+
+    config.onEnter?.();
   };
 
   // ==========================================================================
