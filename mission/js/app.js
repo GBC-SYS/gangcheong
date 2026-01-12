@@ -574,14 +574,28 @@ const App = (() => {
 
     // 카카오톡 공유
     const shareUrl = "https://gbc-sys.github.io/gangcheong/mission/";
+    const imageUrl = "https://gbc-sys.github.io/gangcheong/mission/assets/images/poster.jpg";
 
     Kakao.Share.sendDefault({
-      objectType: "text",
-      text: `[2025 겨울 수련회]\n${state.userName}님의 미션 현황\n\n${description}`,
-      link: {
-        mobileWebUrl: shareUrl,
-        webUrl: shareUrl,
+      objectType: "feed",
+      content: {
+        title: "2026 강청 겨울 수련회",
+        description: `${state.userName}님의 미션 현황\n${description}`,
+        imageUrl: imageUrl,
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
       },
+      buttons: [
+        {
+          title: "미션 확인하기",
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+      ],
     });
   };
 
