@@ -481,6 +481,7 @@ const App = (() => {
 
     // Navigation
     elements.bottomNavBtns = document.querySelectorAll(".bottom-nav__btn");
+    elements.floatingShareBtn = document.getElementById("floatingShareBtn");
 
     // Section pages
     elements.testimonyPage = document.getElementById("testimony");
@@ -507,6 +508,10 @@ const App = (() => {
     elements.bottomNavBtns.forEach((btn) => {
       btn.addEventListener("click", () => handleTabChange(btn.dataset.tab));
     });
+
+    if (elements.floatingShareBtn) {
+      elements.floatingShareBtn.addEventListener("click", handleShare);
+    }
 
     if (elements.testimonyForm) {
       elements.testimonyForm.addEventListener("submit", handleTestimonySubmit);

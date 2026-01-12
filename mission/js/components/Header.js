@@ -14,22 +14,6 @@ const Header = (() => {
         <p class="header__greeting">
           안녕하세요, <span id="displayName">${userName}</span>님!
         </p>
-        <button id="shareBtn" class="share-btn" aria-label="공유하기">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-          </svg>
-        </button>
       </div>
       <div class="header__progress">
         <span class="header__progress-text">

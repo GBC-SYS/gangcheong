@@ -1,3 +1,6 @@
+/* Pretendard 폰트 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 /* ==========================================================================
    Design Tokens - Love in Action (다크 테마)
    ========================================================================== */
@@ -91,8 +94,10 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
-    sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   font-size: var(--text-md);
   font-weight: var(--font-regular);
   line-height: var(--leading-base);
@@ -287,19 +292,24 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  gap: 6px;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+  background: var(--color-pink);
+  border: none;
   border-radius: var(--radius-md);
-  color: var(--color-text);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .share-btn:hover {
-  border-color: var(--color-pink);
-  color: var(--color-pink);
+  background: #d81b60;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
 }
 
 .share-btn:active {
@@ -373,7 +383,9 @@ ul {
   font-size: var(--text-xs);
 }
 
-.day-tab:not(.day-tab--active):not(.day-tab--disabled):not(.day-tab--expired):hover {
+.day-tab:not(.day-tab--active):not(.day-tab--disabled):not(
+    .day-tab--expired
+  ):hover {
   border-color: var(--color-pink);
   color: var(--color-pink);
 }
@@ -509,6 +521,38 @@ ul {
 
 .bottom-nav__btn--active {
   color: var(--color-pink);
+}
+
+/* ==========================================================================
+   Floating Share Button
+   ========================================================================== */
+
+.floating-share-btn {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(var(--color-bg-card), var(--color-bg-card))
+      padding-box,
+    linear-gradient(135deg, #e91e63 0%, #ff5722 50%, #ff9800 100%) border-box;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(233, 30, 99, 0.2);
+  z-index: 99;
+  transition: all 0.3s ease;
+}
+
+.floating-share-btn:active {
+  transform: translateX(-50%) scale(0.95);
 }
 
 /* ==========================================================================
