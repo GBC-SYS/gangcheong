@@ -154,6 +154,12 @@ const App = (() => {
     const total = state.missions.length;
     const completed = state.completedMissions.size;
     Header.updateProgress({ completed, total });
+
+    // 공유 버튼 활성화/비활성화 (최소 5개 미션 완료 필요)
+    if (elements.floatingShareBtn) {
+      const MIN_MISSIONS_TO_SHARE = 3;
+      elements.floatingShareBtn.disabled = completed < MIN_MISSIONS_TO_SHARE;
+    }
   };
 
   const renderMissions = () => {
