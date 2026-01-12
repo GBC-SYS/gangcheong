@@ -410,20 +410,26 @@ const App = (() => {
     });
 
     const mainContent = document.querySelector(".main");
+    const floatingShareWrapper = document.querySelector(
+      ".floating-share-wrapper"
+    );
 
     if (tab === "missions") {
       mainContent.style.display = "block";
       elements.testimonyPage.style.display = "none";
       elements.surveyPage.style.display = "none";
+      if (floatingShareWrapper) floatingShareWrapper.style.display = "block";
     } else if (tab === "testimony") {
       mainContent.style.display = "none";
       elements.testimonyPage.style.display = "flex";
       elements.surveyPage.style.display = "none";
+      if (floatingShareWrapper) floatingShareWrapper.style.display = "none";
       loadTestimonyDraft();
     } else if (tab === "survey") {
       mainContent.style.display = "none";
       elements.testimonyPage.style.display = "none";
       elements.surveyPage.style.display = "flex";
+      if (floatingShareWrapper) floatingShareWrapper.style.display = "none";
       loadSurvey();
     }
   };
