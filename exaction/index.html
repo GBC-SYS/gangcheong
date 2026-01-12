@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOVE in Action - 강청 수련회</title>
+    <meta
+      name="description"
+      content="강남중앙침례교회 청년부 수련회 - 2월 6일~8일 강화 그레이스힐"
+    />
+
+    <!-- Open Graph / 카카오톡 공유 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LOVE in Action - 강청 수련회" />
+    <meta
+      property="og:description"
+      content="강남중앙침례교회 청년부 수련회 - 2월 6일~8일 강화 그레이스힐"
+    />
+    <meta
+      property="og:image"
+      content="https://younhoso.github.io/younhoso/exaction/assets/images/seo.png"
+    />
+    <meta property="og:site_name" content="강남중앙침례교회 청년부" />
+    <meta property="og:locale" content="ko_KR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LOVE in Action - 강청 수련회" />
+    <meta
+      name="twitter:description"
+      content="강남중앙침례교회 청년부 수련회 - 2월 6일~8일 강화 그레이스힐"
+    />
+    <meta
+      name="twitter:image"
+      content="https://younhoso.github.io/younhoso/exaction/assets/images/seo.png"
+    />
+
+    <!-- 추가 SEO -->
+    <meta name="author" content="강남중앙침례교회 청년부" />
+    <meta
+      name="keywords"
+      content="강남중앙침례교회, 청년부, 수련회, 강청, LOVE in Action"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-J4V8Z9J8MG"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-J4V8Z9J8MG");
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 헤더 -->
+      <header class="header">
+        <div class="logo">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            aria-label="강청 로고"
+          >
+            <rect
+              width="40"
+              height="40"
+              rx="8"
+              fill="#ffffff"
+              fill-opacity="0.1"
+            />
+            <text
+              x="20"
+              y="26"
+              text-anchor="middle"
+              fill="#ffffff"
+              font-size="14"
+              font-weight="600"
+            >
+              강청
+            </text>
+          </svg>
+        </div>
+        <div class="contact">
+          <span class="contact-label">문의</span>
+          <a
+            href="#"
+            data-link="kakao"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-link"
+            >카카오 채널 "강청 온라인"</a
+          >
+        </div>
+      </header>
+
+      <!-- 메인 비주얼 -->
+      <main class="main">
+        <img src="assets/images/poster.jpg" alt="LOVE in Action" />
+
+        <!-- 행사 정보 -->
+        <section class="info-section">
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zM4 8h12v8H4V8z"
+                  />
+                </svg>
+              </span>
+              <div class="info-content">
+                <span class="info-label">일시</span>
+                <span class="info-value" data-field="date"></span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <div class="info-content">
+                <span class="info-label">장소</span>
+                <div>
+                  <span data-field="location"></span>
+                  <a
+                    href="#"
+                    data-field="map-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="info-value info-link"
+                  >
+                    [네이버 지도]</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                  />
+                </svg>
+              </span>
+              <div class="info-content">
+                <span class="info-label">대상</span>
+                <span class="info-value" data-field="target"></span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"
+                  />
+                </svg>
+              </span>
+              <div class="info-content">
+                <span class="info-label">강사</span>
+                <span class="info-value speaker-list" data-field="speakers">
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 숙소 신청 안내 상세 정보 -->
+        <section class="detail-section">
+          <h2 class="detail-title">숙소 신청 안내</h2>
+          <div class="swiper detail-swiper">
+            <div class="swiper-wrapper">
+              <!-- 슬라이드는 JS에서 동적 생성 -->
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+      </main>
+
+      <!-- 푸터 -->
+      <footer class="footer">
+        <p class="footer-text">강남중앙침례교회 청년부</p>
+        <p class="footer-contact">
+          문의:
+          <a
+            href="#"
+            data-link="kakao"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-link"
+            >카카오 채널 "강청 온라인"</a
+          >
+        </p>
+      </footer>
+    </div>
+
+    <!-- 고정 신청 버튼 -->
+    <div class="cta-fixed">
+      <a
+        href="#"
+        data-link="apply"
+        class="btn-primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        수련회 신청하기
+      </a>
+    </div>
+
+    <!-- 바텀 시트 컴포넌트 -->
+    <div id="bottom-sheet-overlay" class="bottom-sheet-overlay">
+      <div class="bottom-sheet">
+        <div class="bottom-sheet-header">
+          <h3 class="bottom-sheet-title"></h3>
+          <button class="bottom-sheet-close" aria-label="닫기">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="bottom-sheet-content">
+          <!-- 스토리 미리보기 -->
+          <div class="story-preview">
+            <div class="story-header">
+              <svg
+                width="24px"
+                height="24px"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#fff"
+              >
+                <path
+                  d="M15 6L9 12L15 18"
+                  stroke="#fff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+
+              <span class="story-username"></span>
+              <span class="story-more">···</span>
+            </div>
+            <div class="story-card">
+              <div class="story-logo">
+                <img src="" alt="" class="story-logo-img" />
+              </div>
+              <div class="story-action">
+                <span class="story-action-text">내 스토리 공유하기</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 메시지 -->
+          <div class="bottom-sheet-message">
+            <!-- 메시지는 JS에서 동적 생성 -->
+          </div>
+
+          <!-- 확인 버튼 -->
+          <a
+            href="#"
+            data-link="instagram"
+            class="bottom-sheet-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+          ></a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
