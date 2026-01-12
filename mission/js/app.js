@@ -465,6 +465,7 @@ const App = (() => {
   const showApp = () => {
     elements.intro.style.display = "none";
     elements.app.style.display = "flex";
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     Header.setOnShareClick(handleShare);
     Header.render(elements.header, { userName: state.userName });
