@@ -856,13 +856,14 @@ textarea.input {
   transform: translateX(-50%);
   width: fit-content;
   white-space: nowrap;
-  background: var(--color-bg-card);
+  background: var(--gradient-primary);
   color: var(--color-text);
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  border: none;
   font-size: var(--text-sm);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(233, 30, 99, 0.4);
   animation: toast-in 0.3s ease;
   z-index: 1000;
 }

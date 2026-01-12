@@ -9,12 +9,12 @@ const App = (() => {
 
   const RETREAT_SCHEDULE = {
     1: {
-      start: new Date("2026-01-12T07:00:00"),
-      end: new Date("2026-01-12T24:00:00"),
+      start: new Date("2026-01-11T07:00:00"),
+      end: new Date("2026-01-11T24:00:00"),
     },
     2: {
-      start: new Date("2026-01-13T07:00:00"),
-      end: new Date("2026-01-13T24:00:00"),
+      start: new Date("2026-01-12T07:00:00"),
+      end: new Date("2026-01-12T24:00:00"),
     },
     3: {
       start: new Date("2026-01-14T07:00:00"),
@@ -46,6 +46,34 @@ const App = (() => {
     document.body.appendChild(toast);
 
     setTimeout(() => toast.remove(), 3000);
+  };
+
+  const fireConfetti = () => {
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#e91e63", "#ff5722", "#ff9800", "#ffeb3b", "#4caf50"],
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#e91e63", "#ff5722", "#ff9800", "#ffeb3b", "#4caf50"],
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    frame();
   };
 
   const copyToClipboard = (text) => {
@@ -198,7 +226,9 @@ const App = (() => {
   };
 
   const handleMissionToggle = (missionId) => {
-    if (state.completedMissions.has(missionId)) {
+    const wasCompleted = state.completedMissions.has(missionId);
+
+    if (wasCompleted) {
       state.completedMissions.delete(missionId);
     } else {
       state.completedMissions.add(missionId);
@@ -206,7 +236,28 @@ const App = (() => {
 
     saveState();
     renderMissions();
-    showToast(message);
+
+    // 현재 DAY 미션 모두 완료 시 폭죽 효과 (DAY별 하루에 한 번만)
+    if (!wasCompleted) {
+      const dayMissions = state.missions.filter(
+        (m) => m.day === state.currentDay
+      );
+      const dayCompletedCount = dayMissions.filter((m) =>
+        state.completedMissions.has(m.id)
+      ).length;
+
+      if (dayCompletedCount === dayMissions.length) {
+        const confettiKey = `last_confetti_day${state.currentDay}`;
+        const today = new Date().toDateString();
+        const lastConfetti = localStorage.getItem(confettiKey);
+
+        if (lastConfetti !== today) {
+          localStorage.setItem(confettiKey, today);
+          fireConfetti();
+          showToast(`DAY ${state.currentDay} 미션 완료! 축하합니다! 🎉`);
+        }
+      }
+    }
   };
 
   // ==========================================================================
