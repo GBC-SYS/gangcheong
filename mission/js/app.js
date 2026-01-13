@@ -466,7 +466,8 @@ const App = (() => {
       .map((m) => `✅ ${m.title}`)
       .join("\n");
 
-    let shareText = `${state.userName}님의 미션 현황\n`;
+    let shareText = `2026 강청 겨울 수련회`;
+    shareText += `${state.userName}님의 미션 현황\n\n`;
     shareText += `🎯 ${completed}/${total}개 미션 완료!\n\n`;
 
     if (completedMissionTitles) {
@@ -477,14 +478,10 @@ const App = (() => {
       shareText += `✍️ 간증문:\n"${testimony}"\n\n`;
     }
 
-    const shareUrl = "https://gbc-sys.github.io/gangcheong/mission/";
-
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "2026 강청 겨울 수련회",
           text: shareText,
-          url: shareUrl,
         });
         localStorage.setItem("last_share_date", getTodayKey());
         updateShareButtonShake();
