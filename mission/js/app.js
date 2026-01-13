@@ -79,7 +79,7 @@ const App = (() => {
   const copyToClipboard = (text) => {
     navigator.clipboard
       .writeText(text)
-      .then(() => showToast("클립보드에 복사되었습니다! 📋"))
+      .then(() => showToast("복사 완료! 카카오톡에서 공유해보세요 💬"))
       .catch(() => showToast("복사에 실패했습니다"));
   };
 
@@ -430,7 +430,7 @@ const App = (() => {
   };
 
   // ==========================================================================
-  // Share Functions
+  // 공유 버튼 흔들림 애니메이션 Functions
   // ==========================================================================
 
   const getTodayKey = () => {
@@ -466,7 +466,7 @@ const App = (() => {
       .map((m) => `✅ ${m.title}`)
       .join("\n");
 
-    let shareText = `2026 강청 겨울 수련회`;
+    let shareText = `2026 강청 겨울 수련회\n`;
     shareText += `${state.userName}님의 미션 현황\n\n`;
     shareText += `🎯 ${completed}/${total}개 미션 완료!\n\n`;
 
@@ -655,7 +655,7 @@ const App = (() => {
     elements.userNameInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") handleStart();
     });
-    console.log(elements);
+
     elements.dayTabs.forEach((tab) => {
       tab.addEventListener("click", () =>
         handleDayChange(parseInt(tab.dataset.day))
