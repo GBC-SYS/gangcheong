@@ -146,7 +146,12 @@ const App = (() => {
       const schedule = RETREAT_SCHEDULE[day];
       const month = schedule.start.getMonth() + 1;
       const date = schedule.start.getDate();
-      showToast(`DAY ${day}은 ${month}월 ${date}일 오전 6시에 열립니다 🔒`);
+      const hours = schedule.start.getHours();
+      const period = hours < 12 ? "오전" : "오후";
+      const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+      showToast(
+        `DAY ${day}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`
+      );
       return;
     }
 
@@ -187,10 +192,32 @@ const App = (() => {
     if (elements.floatingShareBtn) {
       const MIN_MISSIONS_TO_SHARE = 3;
       elements.floatingShareBtn.disabled = completed < MIN_MISSIONS_TO_SHARE;
+      updateShareButtonShake();
     }
   };
 
+  const isNightTime = (day) => {
+    const now = new Date();
+    const hours = now.getHours();
+    const schedule = RETREAT_SCHEDULE[day];
+    const endHour = schedule.end.getHours(); // 24:00 → 0
+    const startHour = schedule.start.getHours(); // 07:00 → 7
+    return hours >= endHour && hours < startHour;
+  };
+
   const renderMissions = () => {
+    // 야간 시간 체크 (00:00~07:00)
+    if (isNightTime(state.currentDay) && elements.nightNotice) {
+      elements.nightNotice.style.display = "flex";
+      elements.missionContainer.style.display = "none";
+      return;
+    }
+
+    if (elements.nightNotice) {
+      elements.nightNotice.style.display = "none";
+    }
+    elements.missionContainer.style.display = "";
+
     const dayMissions = state.missions.filter(
       (m) => m.day === state.currentDay
     );
@@ -406,6 +433,29 @@ const App = (() => {
   // Share Functions
   // ==========================================================================
 
+  const getTodayKey = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  };
+
+  const hasSharedToday = () => {
+    return localStorage.getItem("last_share_date") === getTodayKey();
+  };
+
+  const updateShareButtonShake = () => {
+    const wrapper = document.querySelector(".floating-share-wrapper");
+    if (!wrapper || !elements.floatingShareBtn) return;
+
+    const isEnabled = !elements.floatingShareBtn.disabled;
+    const notSharedToday = !hasSharedToday();
+
+    if (isEnabled && notSharedToday) {
+      wrapper.classList.add("shake-active");
+    } else {
+      wrapper.classList.remove("shake-active");
+    }
+  };
+
   const handleShare = async () => {
     const completed = state.completedMissions.size;
     const total = state.missions.length;
@@ -433,13 +483,19 @@ const App = (() => {
           title: "2026 강청 겨울 수련회",
           text: shareText,
         });
+        localStorage.setItem("last_share_date", getTodayKey());
+        updateShareButtonShake();
       } catch (error) {
         if (error.name !== "AbortError") {
           copyToClipboard(shareText);
+          localStorage.setItem("last_share_date", getTodayKey());
+          updateShareButtonShake();
         }
       }
     } else {
       copyToClipboard(shareText);
+      localStorage.setItem("last_share_date", getTodayKey());
+      updateShareButtonShake();
     }
   };
 
@@ -447,40 +503,63 @@ const App = (() => {
   // Navigation Functions
   // ==========================================================================
 
+  const TAB_CONFIG = {
+    missions: {
+      label: "미션",
+      main: "block",
+      testimony: "none",
+      survey: "none",
+      shareBtn: "block",
+      onEnter: null,
+      unlock: null,
+    },
+    testimony: {
+      label: "간증문",
+      main: "none",
+      testimony: "flex",
+      survey: "none",
+      shareBtn: "none",
+      onEnter: loadTestimonyDraft,
+      unlock: { requiredDay: 3, lockedStatus: "locked" },
+    },
+    survey: {
+      label: "설문",
+      main: "none",
+      testimony: "none",
+      survey: "flex",
+      shareBtn: "none",
+      onEnter: loadSurvey,
+      unlock: null,
+    },
+  };
+
   const handleTabChange = (tab) => {
+    const config = TAB_CONFIG[tab];
+    if (!config) return;
+
+    // 잠금 조건 확인
+    if (config.unlock) {
+      const dayStatus = getDayStatus(config.unlock.requiredDay);
+      if (dayStatus === config.unlock.lockedStatus) {
+        const schedule = RETREAT_SCHEDULE[config.unlock.requiredDay];
+        const month = schedule.start.getMonth() + 1;
+        const date = schedule.start.getDate();
+        const hours = schedule.start.getHours();
+        const period = hours < 12 ? "오전" : "오후";
+        const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+        showToast(
+          `${config.label}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`
+        );
+        return;
+      }
+    }
+
     state.currentTab = tab;
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     elements.bottomNavBtns.forEach((btn) => {
       btn.classList.toggle("bottom-nav__btn--active", btn.dataset.tab === tab);
     });
-
-    const tabConfig = {
-      missions: {
-        main: "block",
-        testimony: "none",
-        survey: "none",
-        shareBtn: "block",
-        onEnter: null,
-      },
-      testimony: {
-        main: "none",
-        testimony: "flex",
-        survey: "none",
-        shareBtn: "none",
-        onEnter: loadTestimonyDraft,
-      },
-      survey: {
-        main: "none",
-        testimony: "none",
-        survey: "flex",
-        shareBtn: "none",
-        onEnter: loadSurvey,
-      },
-    };
-
-    const config = tabConfig[tab];
-    if (!config) return;
 
     document.querySelector(".main").style.display = config.main;
     elements.testimonyPage.style.display = config.testimony;
@@ -550,12 +629,15 @@ const App = (() => {
     elements.app = document.getElementById("app");
     elements.header = document.getElementById("header");
     elements.missionContainer = document.getElementById("missionContainer");
+    elements.nightNotice = document.getElementById("nightNotice");
 
     // Day tabs
-    elements.dayTabs = document.querySelectorAll(".day-tab");
+    elements.dayTabs = Array.from(document.querySelectorAll(".day-tab"));
 
     // Navigation
-    elements.bottomNavBtns = document.querySelectorAll(".bottom-nav__btn");
+    elements.bottomNavBtns = Array.from(
+      document.querySelectorAll(".bottom-nav__btn")
+    );
     elements.floatingShareBtn = document.getElementById("floatingShareBtn");
 
     // Section pages
@@ -573,7 +655,7 @@ const App = (() => {
     elements.userNameInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") handleStart();
     });
-
+    console.log(elements);
     elements.dayTabs.forEach((tab) => {
       tab.addEventListener("click", () =>
         handleDayChange(parseInt(tab.dataset.day))
