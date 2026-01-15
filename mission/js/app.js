@@ -9,16 +9,16 @@ const App = (() => {
 
   const RETREAT_SCHEDULE = {
     1: {
-      start: new Date("2026-01-12T07:00:00"),
-      end: new Date("2026-01-12T24:00:00"),
+      start: new Date("2026-01-16T07:00:00"),
+      end: new Date("2026-01-16T24:00:00"),
     },
     2: {
-      start: new Date("2026-01-13T07:00:00"),
-      end: new Date("2026-01-13T24:00:00"),
+      start: new Date("2026-01-17T07:00:00"),
+      end: new Date("2026-01-17T24:00:00"),
     },
     3: {
-      start: new Date("2026-01-14T07:00:00"),
-      end: new Date("2026-01-14T24:00:00"),
+      start: new Date("2026-01-18T07:00:00"),
+      end: new Date("2026-01-18T24:00:00"),
     },
   };
 
@@ -188,12 +188,18 @@ const App = (() => {
     const completed = state.completedMissions.size;
     Header.updateProgress({ completed, total });
 
-    // 공유 버튼 활성화/비활성화 (최소 3개 미션 완료 필요)
+    // 공유 버튼 활성화/비활성화 (전체 미션의 절반 이상 완료 필요)
     if (elements.floatingShareBtn) {
-      const MIN_MISSIONS_TO_SHARE = 3;
+      const MIN_MISSIONS_TO_SHARE = Math.ceil(total / 2);
       elements.floatingShareBtn.disabled = completed < MIN_MISSIONS_TO_SHARE;
       updateShareButtonShake();
     }
+  };
+
+  const isBeforeStart = () => {
+    const now = new Date();
+    const firstDayStart = RETREAT_SCHEDULE[1].start;
+    return now < firstDayStart;
   };
 
   const isNightTime = (day) => {
@@ -206,10 +212,25 @@ const App = (() => {
   };
 
   const renderMissions = () => {
+    // 시작 전 체크
+    if (isBeforeStart() && elements.beforeStartNotice) {
+      elements.beforeStartNotice.style.display = "flex";
+      elements.missionContainer.style.display = "none";
+      if (elements.nightNotice) {
+        elements.nightNotice.style.display = "none";
+      }
+      return;
+    }
+
+    if (elements.beforeStartNotice) {
+      elements.beforeStartNotice.style.display = "none";
+    }
+
     // 야간 시간 체크 (00:00~07:00)
     if (isNightTime(state.currentDay) && elements.nightNotice) {
       elements.nightNotice.style.display = "flex";
       elements.missionContainer.style.display = "none";
+      updateProgress();
       return;
     }
 
@@ -630,6 +651,7 @@ const App = (() => {
     elements.header = document.getElementById("header");
     elements.missionContainer = document.getElementById("missionContainer");
     elements.nightNotice = document.getElementById("nightNotice");
+    elements.beforeStartNotice = document.getElementById("beforeStartNotice");
 
     // Day tabs
     elements.dayTabs = Array.from(document.querySelectorAll(".day-tab"));
