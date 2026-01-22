@@ -160,7 +160,7 @@ const App = (() => {
                 </svg>
                 <span>사진으로 인증하기</span>
               </label>
-              <input type="file" id="photo-${language.id}" class="stamp-card__photo-input" data-id="${language.id}" accept="image/*" />
+              <input type="file" id="photo-${language.id}" class="stamp-card__photo-input" data-id="${language.id}" accept="image/*" capture="environment" />
             </div>
           `
           }
@@ -279,48 +279,74 @@ const App = (() => {
   // Photo Functions
   // ==========================================================================
 
-  const handlePhotoUpload = (languageId, file) => {
+  const handlePhotoUpload = async (languageId, file) => {
     if (!file || !state.stampData[languageId]) return;
 
-    // 이미지 리사이즈 및 압축
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const maxSize = 400; // 최대 크기
-        let width = img.width;
-        let height = img.height;
+    showToast("사진 처리 중...");
 
-        // 비율 유지하며 리사이즈
-        if (width > height) {
-          if (width > maxSize) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          }
-        } else {
-          if (height > maxSize) {
-            width = (width * maxSize) / height;
-            height = maxSize;
-          }
+    try {
+      // createImageBitmap 사용 (EXIF 방향 자동 처리, 모바일 호환성 향상)
+      let imageBitmap;
+
+      if (typeof createImageBitmap === "function") {
+        // 모던 브라우저 - EXIF 방향 자동 처리
+        imageBitmap = await createImageBitmap(file);
+      } else {
+        // 폴백 - 구형 브라우저
+        imageBitmap = await loadImageFromFile(file);
+      }
+
+      const canvas = document.createElement("canvas");
+      const maxSize = 400;
+      let width = imageBitmap.width;
+      let height = imageBitmap.height;
+
+      // 비율 유지하며 리사이즈
+      if (width > height) {
+        if (width > maxSize) {
+          height = (height * maxSize) / width;
+          width = maxSize;
         }
+      } else {
+        if (height > maxSize) {
+          width = (width * maxSize) / height;
+          height = maxSize;
+        }
+      }
 
-        canvas.width = width;
-        canvas.height = height;
+      canvas.width = width;
+      canvas.height = height;
 
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imageBitmap, 0, 0, width, height);
 
-        // 압축된 이미지 저장
-        const compressedData = canvas.toDataURL("image/jpeg", 0.7);
-        state.stampData[languageId].photoData = compressedData;
-        saveState();
-        renderStamps();
-        showToast("사진이 등록되었습니다! 미션을 완료해주세요.");
+      // 압축된 이미지 저장
+      const compressedData = canvas.toDataURL("image/jpeg", 0.7);
+      state.stampData[languageId].photoData = compressedData;
+      saveState();
+      renderStamps();
+      showToast("사진이 등록되었습니다! 미션을 완료해주세요.");
+    } catch (error) {
+      console.error("Photo upload error:", error);
+      showToast("사진 처리에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  /**
+   * 파일에서 이미지 로드 (폴백용)
+   */
+  const loadImageFromFile = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = e.target.result;
       };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const handlePhotoRemove = (languageId) => {
