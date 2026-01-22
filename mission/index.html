@@ -14,10 +14,7 @@
       property="og:url"
       content="https://gbc-sys.github.io/gangcheong/mission/"
     />
-    <meta
-      property="og:title"
-      content="LOVE in Action - 사랑의 언어 도장판"
-    />
+    <meta property="og:title" content="LOVE in Action - 사랑의 언어 도장판" />
     <meta
       property="og:description"
       content="5가지 사랑의 언어로 사랑을 실천해요!"
@@ -33,10 +30,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="LOVE in Action - 사랑의 언어 도장판"
-    />
+    <meta name="twitter:title" content="LOVE in Action - 사랑의 언어 도장판" />
     <meta
       name="twitter:description"
       content="5가지 사랑의 언어로 사랑을 실천해요!"
@@ -99,9 +93,7 @@
           <button class="main-tab main-tab--active" data-tab="stamp">
             도장판
           </button>
-          <button class="main-tab" data-tab="timetable">
-            타임테이블
-          </button>
+          <button class="main-tab" data-tab="timetable">타임테이블</button>
         </div>
 
         <!-- 시작 전 안내 -->
@@ -128,7 +120,8 @@
         <div id="stampSection" class="stamp-section">
           <p class="stamp-section__desc">
             5가지 사랑의 언어로 주변 사람들에게 사랑을 표현해보세요!<br />
-            각 언어별로 대상자를 정하고, 미션을 선택한 뒤 완료하면 도장을 받아요.
+            각 언어별로 대상자를 정하고, 미션을 선택한 뒤 완료하면 도장을
+            받아요.
           </p>
           <div id="stampContainer" class="stamp-container">
             <!-- 도장판 카드들이 동적으로 추가됩니다 -->
@@ -136,10 +129,12 @@
         </div>
 
         <!-- 타임테이블 섹션 -->
-        <div id="timetableSection" class="timetable-section" style="display: none">
-          <p class="timetable-section__desc">
-            오늘의 일정을 확인하세요!
-          </p>
+        <div
+          id="timetableSection"
+          class="timetable-section"
+          style="display: none"
+        >
+          <p class="timetable-section__desc">오늘의 일정을 확인하세요!</p>
           <div id="timetableContainer" class="timetable-container">
             <!-- 타임테이블이 동적으로 추가됩니다 -->
           </div>
@@ -269,6 +264,32 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+      // 로컬스토리지 버전 관리 - 버전 변경 시 특정 데이터 초기화
+      (function () {
+        const STORAGE_VERSION = "1";
+        const savedVersion = localStorage.getItem("storage_version");
+
+        if (savedVersion !== STORAGE_VERSION) {
+          // 초기화할 키 목록
+          const keysToRemove = [
+            "stamp_data",
+            "last_share_date",
+            "userName",
+            "last_confetti_day1",
+            "last_confetti_day2",
+          ];
+
+          keysToRemove.forEach((key) => localStorage.removeItem(key));
+          localStorage.setItem("storage_version", STORAGE_VERSION);
+          console.log(
+            "로컬스토리지 데이터가 초기화되었습니다. (v" +
+              STORAGE_VERSION +
+              ")",
+          );
+        }
+      })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="js/components/Header.js"></script>
     <script src="js/app.js"></script>
