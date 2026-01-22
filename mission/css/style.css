@@ -384,11 +384,6 @@ body {
   min-height: var(--touch-min);
 }
 
-.day-tab--active {
-  background: var(--gradient-primary);
-  color: #ffffff;
-}
-
 .day-tab--disabled {
   opacity: 0.4;
   cursor: not-allowed;
