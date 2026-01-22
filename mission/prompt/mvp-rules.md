@@ -164,7 +164,7 @@ const analyzeMenu = async (imageBase64) => {
           },
         ],
       }),
-    }
+    },
   );
   return response.json();
 };
