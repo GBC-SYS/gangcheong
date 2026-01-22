@@ -62,6 +62,7 @@
 }
 
 .day-tab {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -77,7 +78,7 @@
     background 0.1s ease,
     border-color 0.1s ease;
   -webkit-border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .day-tab__label {
@@ -92,14 +93,11 @@
   color: #666;
 }
 
-.day-tab:hover {
-  background: #252525;
-  border-color: #444;
-}
-
 .day-tab--active {
-  background: linear-gradient(135deg, #e91e63, #ff5722);
-  border: none;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
+    var(--gradient-primary) border-box;
 }
 
 .day-tab--active .day-tab__label,
@@ -107,11 +105,13 @@
   color: #ffffff;
 }
 
-.day-tab--today:not(.day-tab--active) {
-  border-color: var(--color-primary);
-}
-
-.day-tab--today:not(.day-tab--active) .day-tab__label,
-.day-tab--today:not(.day-tab--active) .day-tab__date {
-  color: var(--color-primary);
+.day-tab--today::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
 }
