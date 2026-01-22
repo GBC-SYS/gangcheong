@@ -753,21 +753,18 @@ const App = (() => {
       // 도장판 이미지 생성
       const canvas = await generateShareImage();
 
-      // Canvas를 Blob으로 변환
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-      const file = new File([blob], "사랑의언어_도장판.png", { type: "image/png" });
+      // Canvas를 Blob으로 변환 (JPEG로 변경 - 호환성 향상)
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
+      const file = new File([blob], "사랑의언어_도장판.jpg", { type: "image/jpeg" });
 
       // Web Share API (파일 공유) 지원 확인
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
             files: [file],
-            title: "사랑의 언어 도장판",
-            text: `${state.userName}님의 사랑의 언어 도장판 🎉`,
           });
           localStorage.setItem("last_share_date", getTodayKey());
           updateShareButtonShake();
-          showToast("공유 완료!");
         } catch (error) {
           if (error.name !== "AbortError") {
             // 공유 취소가 아닌 경우 다운로드로 대체
@@ -776,6 +773,7 @@ const App = (() => {
         }
       } else {
         // 파일 공유 미지원 시 다운로드
+        showToast("파일 공유 미지원 - 다운로드합니다");
         downloadImage(canvas);
       }
     } catch (error) {
