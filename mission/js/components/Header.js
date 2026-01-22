@@ -17,7 +17,7 @@ const Header = (() => {
       </div>
       <div class="header__progress">
         <span class="header__progress-text">
-          미션 <span id="completedCount">0</span>개/<span id="totalCount">0</span>개 완료
+          도장 <span id="completedCount">0</span>개/<span id="totalCount">0</span>개 획득
         </span>
         <div class="header__progress-bar">
           <div id="progressFill" class="header__progress-fill"></div>

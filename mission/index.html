@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="강남중앙침례교회 청년부 수련회 미션 체크리스트"
+      content="강남중앙침례교회 청년부 수련회 사랑의 언어 도장판"
     />
 
     <!-- Open Graph / 카카오톡 공유 -->
@@ -16,11 +16,11 @@
     />
     <meta
       property="og:title"
-      content="LOVE in Action - 수련회 미션 체크리스트"
+      content="LOVE in Action - 사랑의 언어 도장판"
     />
     <meta
       property="og:description"
-      content="2박 3일 수련회 미션을 완료하세요!"
+      content="5가지 사랑의 언어로 사랑을 실천해요!"
     />
     <meta
       property="og:image"
@@ -35,18 +35,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="LOVE in Action - 수련회 미션 체크리스트"
+      content="LOVE in Action - 사랑의 언어 도장판"
     />
     <meta
       name="twitter:description"
-      content="2박 3일 수련회 미션을 완료하세요!"
+      content="5가지 사랑의 언어로 사랑을 실천해요!"
     />
     <meta
       name="twitter:image"
       content="https://gbc-sys.github.io/gangcheong/mission/assets/images/seo.png"
     />
 
-    <title>강청 | 수련회 미션 체크리스트</title>
+    <title>강청 | 사랑의 언어 도장판</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css" />
@@ -59,10 +59,10 @@
           <img src="assets/images/logo.jpg" alt="로고" />
         </div>
         <h1 class="intro__title">2026 강청 겨울 수련회</h1>
-        <p class="intro__subtitle">2박 3일 미션 체크리스트</p>
+        <p class="intro__subtitle">LOVE in Action - 사랑의 언어 도장판</p>
 
         <div class="intro__form">
-          <label class="intro__label">당신의 이름은? 🙋</label>
+          <label class="intro__label">당신의 이름은?</label>
           <input
             type="text"
             id="userName"
@@ -92,18 +92,15 @@
       <!-- 헤더 (Header 컴포넌트로 렌더링) -->
       <header id="header" class="header"></header>
 
-      <!-- 미션 체크리스트 -->
+      <!-- 메인 콘텐츠 -->
       <main class="main">
-        <!-- Day 탭 -->
-        <div class="day-tabs">
-          <button class="day-tab day-tab--active" data-day="1">
-            <span>DAY 1 </span><br />(1월 16일 금)
+        <!-- 탭 (도장판 / 타임테이블) -->
+        <div class="main-tabs">
+          <button class="main-tab main-tab--active" data-tab="stamp">
+            도장판
           </button>
-          <button class="day-tab" data-day="2">
-            <span>DAY 2 </span><br />(1월 17일 토)
-          </button>
-          <button class="day-tab" data-day="3">
-            <span>DAY 3 </span><br />(1월 18일 주일)
+          <button class="main-tab" data-tab="timetable">
+            타임테이블
           </button>
         </div>
 
@@ -112,18 +109,8 @@
           <div class="night-notice__icon">🙏</div>
           <h2 class="night-notice__title">아직 미션 시작 전이에요!</h2>
           <p class="night-notice__desc">
-            수련회 첫째 날부터 미션이 시작됩니다.<br />
+            수련회 당일부터 미션이 시작됩니다.<br />
             조금만 기다려주세요!
-          </p>
-        </div>
-
-        <!-- 야간 안내 (00:00~07:00) -->
-        <div id="nightNotice" class="night-notice" style="display: none">
-          <div class="night-notice__icon">🌙</div>
-          <h2 class="night-notice__title">푹 쉬세요!</h2>
-          <p class="night-notice__desc">
-            오전 7시에 새로운 미션이 열립니다.<br />
-            내일도 힘내서 미션에 도전해주세요!
           </p>
         </div>
 
@@ -132,13 +119,30 @@
           <div class="night-notice__icon">🎉</div>
           <h2 class="night-notice__title">미션 기간이 끝났습니다</h2>
           <p class="night-notice__desc">
-            수련회 미션에 참여해주셔서 감사합니다!<br />
+            사랑의 언어 미션에 참여해주셔서 감사합니다!<br />
             함께한 시간이 복된 추억이 되길 바랍니다.
           </p>
         </div>
 
-        <div id="missionContainer" class="mission-container">
-          <!-- 미션 아이템들이 동적으로 추가됩니다 -->
+        <!-- 도장판 섹션 -->
+        <div id="stampSection" class="stamp-section">
+          <p class="stamp-section__desc">
+            5가지 사랑의 언어로 주변 사람들에게 사랑을 표현해보세요!<br />
+            각 언어별로 대상자를 정하고, 미션을 선택한 뒤 완료하면 도장을 받아요.
+          </p>
+          <div id="stampContainer" class="stamp-container">
+            <!-- 도장판 카드들이 동적으로 추가됩니다 -->
+          </div>
+        </div>
+
+        <!-- 타임테이블 섹션 -->
+        <div id="timetableSection" class="timetable-section" style="display: none">
+          <p class="timetable-section__desc">
+            오늘의 일정을 확인하세요!
+          </p>
+          <div id="timetableContainer" class="timetable-container">
+            <!-- 타임테이블이 동적으로 추가됩니다 -->
+          </div>
         </div>
       </main>
 
@@ -162,7 +166,7 @@
           <span>공유하기</span>
         </button>
         <div class="floating-share-tooltip">
-          미션 절반 이상 완료해야 버튼이 활성화됩니다.
+          1개 이상 도장을 모으면 공유할 수 있어요!
         </div>
       </div>
 
@@ -181,7 +185,7 @@
       <nav class="bottom-nav">
         <button
           class="bottom-nav__btn bottom-nav__btn--active"
-          data-tab="missions"
+          data-tab="stamp"
         >
           <svg
             width="24"
@@ -190,12 +194,10 @@
             fill="none"
             stroke-width="2"
           >
-            <path d="M9 11l3 3L22 4"></path>
-            <path
-              d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
-            ></path>
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9 12l2 2 4-4"></path>
           </svg>
-          <span>미션</span>
+          <span>도장판</span>
         </button>
         <button class="bottom-nav__btn" data-tab="testimony">
           <svg
@@ -232,41 +234,36 @@
           <span>설문</span>
         </button>
       </nav>
+    </div>
 
-      <!-- 간증문 섹션 -->
-      <div id="testimony" class="section-page" style="display: none">
-        <div class="section-page__content">
-          <h2 class="section-page__title">간증문 작성</h2>
-          <p class="section-page__desc">수련회에서 느낀 은혜를 기록해주세요.</p>
-          <form class="testimony-form">
-            <textarea
-              id="testimonyText"
-              class="input testimony-form__textarea"
-              placeholder="이번 수련회를 통해 느낀 점, 깨달은 점을 자유롭게 작성해주세요..."
-              rows="10"
-            ></textarea>
-            <div class="testimony-form__actions">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                id="saveTestimonyBtn"
-              >
-                임시저장
-              </button>
-              <button type="submit" class="btn btn-primary">제출하기</button>
-            </div>
-          </form>
+    <!-- 미션 선택 모달 -->
+    <div id="missionModal" class="modal" style="display: none">
+      <div class="modal__backdrop"></div>
+      <div class="modal__content">
+        <div class="modal__header">
+          <h3 class="modal__title" id="modalTitle">미션 선택</h3>
+          <button class="modal__close" id="modalClose">&times;</button>
         </div>
-      </div>
-
-      <!-- 설문 섹션 -->
-      <div id="survey" class="section-page" style="display: none">
-        <div class="section-page__content">
-          <h2 class="section-page__title">설문조사</h2>
-          <p class="section-page__desc">수련회 장단점을 알려주세요.</p>
-          <form id="surveyForm" class="survey-form">
-            <!-- 설문 문항이 동적으로 추가됩니다 -->
-          </form>
+        <div class="modal__body">
+          <div class="modal__target">
+            <label class="modal__label">누구에게 사랑을 표현할까요?</label>
+            <input
+              type="text"
+              id="targetName"
+              class="modal__input"
+              placeholder="대상자 이름"
+            />
+          </div>
+          <div class="modal__missions">
+            <label class="modal__label">어떤 미션을 수행할까요?</label>
+            <div id="missionOptions" class="modal__options">
+              <!-- 미션 옵션들이 동적으로 추가됩니다 -->
+            </div>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button class="btn btn-secondary" id="modalCancel">취소</button>
+          <button class="btn btn-primary" id="modalConfirm">확인</button>
         </div>
       </div>
     </div>
