@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -97,7 +97,7 @@
         <!-- Day 탭 -->
         <div class="day-tabs">
           <button class="day-tab day-tab--active" data-day="1">
-            DAY 1 <br />(1월 16일 금)
+            <span>DAY 1 </span><br />(1월 16일 금)
           </button>
           <button class="day-tab" data-day="2">
             <span>DAY 2 </span><br />(1월 17일 토)
@@ -124,6 +124,16 @@
           <p class="night-notice__desc">
             오전 7시에 새로운 미션이 열립니다.<br />
             내일도 힘내서 미션에 도전해주세요!
+          </p>
+        </div>
+
+        <!-- 미션 기간 종료 안내 -->
+        <div id="missionEndedNotice" class="night-notice" style="display: none">
+          <div class="night-notice__icon">🎉</div>
+          <h2 class="night-notice__title">미션 기간이 끝났습니다</h2>
+          <p class="night-notice__desc">
+            수련회 미션에 참여해주셔서 감사합니다!<br />
+            함께한 시간이 복된 추억이 되길 바랍니다.
           </p>
         </div>
 

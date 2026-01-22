@@ -97,7 +97,7 @@ const App = (() => {
   const saveState = () => {
     localStorage.setItem(
       "completed_missions",
-      JSON.stringify([...state.completedMissions])
+      JSON.stringify([...state.completedMissions]),
     );
   };
 
@@ -150,7 +150,7 @@ const App = (() => {
       const period = hours < 12 ? "오전" : "오후";
       const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
       showToast(
-        `DAY ${day}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`
+        `DAY ${day}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`,
       );
       return;
     }
@@ -202,6 +202,12 @@ const App = (() => {
     return now < firstDayStart;
   };
 
+  const isAfterEnd = () => {
+    const now = new Date();
+    const lastDayEnd = RETREAT_SCHEDULE[3].end;
+    return now >= lastDayEnd;
+  };
+
   const isNightTime = (day) => {
     const now = new Date();
     const hours = now.getHours();
@@ -219,6 +225,9 @@ const App = (() => {
       if (elements.nightNotice) {
         elements.nightNotice.style.display = "none";
       }
+      if (elements.missionEndedNotice) {
+        elements.missionEndedNotice.style.display = "none";
+      }
       return;
     }
 
@@ -226,10 +235,28 @@ const App = (() => {
       elements.beforeStartNotice.style.display = "none";
     }
 
+    // 미션 기간 종료 체크
+    if (isAfterEnd() && elements.missionEndedNotice) {
+      elements.missionEndedNotice.style.display = "flex";
+      elements.missionContainer.style.display = "none";
+      if (elements.nightNotice) {
+        elements.nightNotice.style.display = "none";
+      }
+      updateProgress();
+      return;
+    }
+
+    if (elements.missionEndedNotice) {
+      elements.missionEndedNotice.style.display = "none";
+    }
+
     // 야간 시간 체크 (00:00~07:00)
     if (isNightTime(state.currentDay) && elements.nightNotice) {
       elements.nightNotice.style.display = "flex";
       elements.missionContainer.style.display = "none";
+      if (elements.missionEndedNotice) {
+        elements.missionEndedNotice.style.display = "none";
+      }
       updateProgress();
       return;
     }
@@ -240,7 +267,7 @@ const App = (() => {
     elements.missionContainer.style.display = "";
 
     const dayMissions = state.missions.filter(
-      (m) => m.day === state.currentDay
+      (m) => m.day === state.currentDay,
     );
 
     const html = dayMissions
@@ -253,7 +280,7 @@ const App = (() => {
       .querySelectorAll(".mission-item")
       .forEach((item) => {
         item.addEventListener("click", () =>
-          handleMissionToggle(parseInt(item.dataset.id))
+          handleMissionToggle(parseInt(item.dataset.id)),
         );
       });
 
@@ -288,10 +315,10 @@ const App = (() => {
     // 현재 DAY 미션 모두 완료 시 폭죽 효과 (DAY별 하루에 한 번만)
     if (!wasCompleted) {
       const dayMissions = state.missions.filter(
-        (m) => m.day === state.currentDay
+        (m) => m.day === state.currentDay,
       );
       const dayCompletedCount = dayMissions.filter((m) =>
-        state.completedMissions.has(m.id)
+        state.completedMissions.has(m.id),
       ).length;
 
       if (dayCompletedCount === dayMissions.length) {
@@ -322,21 +349,21 @@ const App = (() => {
         elements.testimonyText.disabled = true;
         elements.saveTestimonyBtn.style.display = "none";
         document.querySelector(
-          ".testimony-form button[type='submit']"
+          ".testimony-form button[type='submit']",
         ).textContent = "수정하기";
       } else if (draft) {
         elements.testimonyText.value = draft;
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
         document.querySelector(
-          ".testimony-form button[type='submit']"
+          ".testimony-form button[type='submit']",
         ).textContent = "제출하기";
       } else {
         elements.testimonyText.value = "";
         elements.testimonyText.disabled = false;
         elements.saveTestimonyBtn.style.display = "";
         document.querySelector(
-          ".testimony-form button[type='submit']"
+          ".testimony-form button[type='submit']",
         ).textContent = "제출하기";
       }
     }
@@ -362,7 +389,7 @@ const App = (() => {
       elements.testimonyText.disabled = false;
       elements.saveTestimonyBtn.style.display = "";
       document.querySelector(
-        ".testimony-form button[type='submit']"
+        ".testimony-form button[type='submit']",
       ).textContent = "수정 완료";
       elements.testimonyText.focus();
       showToast("수정 모드로 전환되었습니다 ✏️");
@@ -569,7 +596,7 @@ const App = (() => {
         const period = hours < 12 ? "오전" : "오후";
         const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
         showToast(
-          `${config.label}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`
+          `${config.label}은 ${month}월 ${date}일 ${period} ${displayHours}시에 열립니다 🔒`,
         );
         return;
       }
@@ -587,7 +614,7 @@ const App = (() => {
     elements.surveyPage.style.display = config.survey;
 
     const floatingShareWrapper = document.querySelector(
-      ".floating-share-wrapper"
+      ".floating-share-wrapper",
     );
     if (floatingShareWrapper) {
       floatingShareWrapper.style.display = config.shareBtn;
@@ -652,13 +679,14 @@ const App = (() => {
     elements.missionContainer = document.getElementById("missionContainer");
     elements.nightNotice = document.getElementById("nightNotice");
     elements.beforeStartNotice = document.getElementById("beforeStartNotice");
+    elements.missionEndedNotice = document.getElementById("missionEndedNotice");
 
     // Day tabs
     elements.dayTabs = Array.from(document.querySelectorAll(".day-tab"));
 
     // Navigation
     elements.bottomNavBtns = Array.from(
-      document.querySelectorAll(".bottom-nav__btn")
+      document.querySelectorAll(".bottom-nav__btn"),
     );
     elements.floatingShareBtn = document.getElementById("floatingShareBtn");
 
@@ -680,7 +708,7 @@ const App = (() => {
 
     elements.dayTabs.forEach((tab) => {
       tab.addEventListener("click", () =>
-        handleDayChange(parseInt(tab.dataset.day))
+        handleDayChange(parseInt(tab.dataset.day)),
       );
     });
 
