@@ -159,7 +159,7 @@ const App = (() => {
                 </svg>
                 <span>사진으로 인증하기</span>
               </label>
-              <input type="file" id="photo-${language.id}" class="stamp-card__photo-input" data-id="${language.id}" accept="image/*" capture="environment" />
+              <input type="file" id="photo-${language.id}" class="stamp-card__photo-input" data-id="${language.id}" accept="image/*" />
             </div>
           `
           }

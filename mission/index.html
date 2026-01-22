@@ -43,6 +43,7 @@
     <title>강청 | 사랑의 언어 도장판</title>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -88,14 +89,6 @@
 
       <!-- 메인 콘텐츠 -->
       <main class="main">
-        <!-- 탭 (도장판 / 타임테이블) -->
-        <div class="main-tabs">
-          <button class="main-tab main-tab--active" data-tab="stamp">
-            도장판
-          </button>
-          <button class="main-tab" data-tab="timetable">타임테이블</button>
-        </div>
-
         <!-- 시작 전 안내 -->
         <div id="beforeStartNotice" class="night-notice" style="display: none">
           <div class="night-notice__icon">🙏</div>
@@ -128,17 +121,6 @@
           </div>
         </div>
 
-        <!-- 타임테이블 섹션 -->
-        <div
-          id="timetableSection"
-          class="timetable-section"
-          style="display: none"
-        >
-          <p class="timetable-section__desc">오늘의 일정을 확인하세요!</p>
-          <div id="timetableContainer" class="timetable-container">
-            <!-- 타임테이블이 동적으로 추가됩니다 -->
-          </div>
-        </div>
       </main>
 
       <!-- 하단 고정 공유 버튼 -->
@@ -194,6 +176,19 @@
           </svg>
           <span>도장판</span>
         </button>
+        <a href="page/timetable.html" class="bottom-nav__btn" data-tab="timetable">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>타임테이블</span>
+        </a>
         <button class="bottom-nav__btn" data-tab="testimony">
           <svg
             width="24"

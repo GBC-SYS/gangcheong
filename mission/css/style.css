@@ -114,21 +114,8 @@
 }
 
 /* ==========================================================================
-   Reset & Base
+   Base Styles
    ========================================================================== */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-}
 
 body {
   font-family:
@@ -148,26 +135,6 @@ body {
   line-height: var(--leading-base);
   color: var(--color-text);
   background-color: var(--color-bg);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-button {
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-input,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-}
-
-ul {
-  list-style: none;
 }
 
 /* ==========================================================================
@@ -431,16 +398,6 @@ ul {
   content: "🔒";
   margin-left: var(--space-1);
   font-size: var(--text-xs);
-}
-
-.day-tab:not(.day-tab--active):not(.day-tab--disabled):not(
-    .day-tab--expired
-  ):hover {
-  border-image: var(--gradient-primary) 1;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* 종료된 Day 탭 */

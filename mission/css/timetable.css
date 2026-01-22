@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Timetable Page Styles (타임테이블 페이지 전용)
+   ========================================================================== */
+
+.timetable-page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-8) + 80px);
+}
+
+.timetable-header {
+  text-align: center;
+  padding: var(--space-6) 0;
+  margin-bottom: var(--space-4);
+}
+
+.timetable-header__logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
+}
+
+.timetable-header__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.timetable-header__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.timetable-header__date {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--gradient-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: #ffffff;
+}
+
+.timetable-section {
+  display: block;
+}
+
+/* ==========================================================================
+   Day Tabs (일자 탭)
+   ========================================================================== */
+
+.day-tabs {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.day-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-4) var(--space-3);
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-border-radius: 16px;
+  overflow: hidden;
+}
+
+.day-tab__label {
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+.day-tab__date {
+  font-size: var(--text-sm);
+  color: #666;
+}
+
+.day-tab:hover {
+  background: #252525;
+  border-color: #444;
+}
+
+.day-tab--active {
+  background: linear-gradient(135deg, #e91e63, #ff5722);
+  border: none;
+}
+
+.day-tab--active .day-tab__label,
+.day-tab--active .day-tab__date {
+  color: #ffffff;
+}
+
+.day-tab--today:not(.day-tab--active) {
+  border-color: var(--color-primary);
+}
+
+.day-tab--today:not(.day-tab--active) .day-tab__label,
+.day-tab--today:not(.day-tab--active) .day-tab__date {
+  color: var(--color-primary);
+}
