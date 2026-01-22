@@ -9,10 +9,10 @@ const App = (() => {
 
   // 미션 진행 시간 (하루만 진행)
   const MISSION_SCHEDULE = {
-    // start: new Date("2026-02-07T11:00:00"),
-    // end: new Date("2026-02-07T17:00:00"),
+    // start: new Date("2026-02-07T07:00:00"),
+    // end: new Date("2026-02-07T23:59:00"),
     start: new Date("2026-01-22T07:00:00"),
-    end: new Date("2026-01-22T23:59:00"),
+    end: new Date("2026-01-31T23:59:00"),
   };
 
   // 구글폼 링크 (임원단이 나중에 수정)
