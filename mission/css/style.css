@@ -55,8 +55,20 @@
   --color-orange: #ff9500;
 
   /* 그라데이션 */
-  --gradient-primary: linear-gradient(135deg, #e91e63 0%, #ff5722 50%, #ff9800 100%);
-  --gradient-progress: linear-gradient(90deg, #e91e63 0%, #f44336 25%, #ff9800 50%, #ffeb3b 75%, #4caf50 100%);
+  --gradient-primary: linear-gradient(
+    135deg,
+    #e91e63 0%,
+    #ff5722 50%,
+    #ff9800 100%
+  );
+  --gradient-progress: linear-gradient(
+    90deg,
+    #e91e63 0%,
+    #f44336 25%,
+    #ff9800 50%,
+    #ffeb3b 75%,
+    #4caf50 100%
+  );
 
   /* 그림자 */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -119,9 +131,18 @@ html {
 }
 
 body {
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
-    Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
-    "Malgun Gothic", sans-serif;
+  font-family:
+    "Pretendard",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    sans-serif;
   font-size: var(--text-md);
   font-weight: var(--font-regular);
   line-height: var(--leading-base);
@@ -280,7 +301,7 @@ ul {
 .main {
   flex: 1;
   padding: var(--space-4);
-  padding-bottom: 80px;
+  padding-bottom: 160px;
 }
 
 /* ==========================================================================
@@ -464,7 +485,9 @@ ul {
   align-items: center;
   gap: var(--space-4);
   border: 1px solid var(--color-border);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
   cursor: pointer;
 }
 
@@ -474,8 +497,8 @@ ul {
 
 .mission-item--completed {
   border: 2px solid transparent;
-  background: linear-gradient(var(--color-bg-card), var(--color-bg-card))
-      padding-box,
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
     linear-gradient(135deg, #e91e63 0%, #ff5722 50%, #ff9800 100%) border-box;
 }
 
@@ -544,7 +567,7 @@ ul {
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-  padding: var(--space-2);
+  padding: var(--space-1);
   color: var(--color-text-secondary);
   transition: color 0.2s ease;
   min-height: var(--touch-min);
@@ -656,7 +679,8 @@ ul {
   justify-content: center;
   gap: 8px;
   padding: 14px 28px;
-  background: linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
     var(--gradient-primary) border-box;
   border: 2px solid transparent;
   border-radius: 50px;
@@ -1016,7 +1040,8 @@ textarea.input {
 
 .stamp-card--completed {
   border: 2px solid transparent;
-  background: linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
     var(--gradient-primary) border-box;
   cursor: default;
 }
@@ -1246,7 +1271,8 @@ textarea.input {
 /* 현재 진행 중인 일정 */
 .timetable-item--current {
   border: 2px solid transparent;
-  background: linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
     var(--gradient-primary) border-box;
   box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
   transform: scale(1.02);
@@ -1277,7 +1303,8 @@ textarea.input {
 }
 
 @keyframes pulse-badge {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 2px 8px rgba(233, 30, 99, 0.4);
   }
