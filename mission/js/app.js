@@ -10,7 +10,7 @@ const App = (() => {
   // 미션 진행 시간 (하루만 진행)
   const MISSION_SCHEDULE = {
     start: new Date("2026-01-22T07:00:00"),
-    end: new Date("2026-01-22T18:00:00"),
+    end: new Date("2026-01-22T23:59:00"),
   };
 
   // 구글폼 링크 (임원단이 나중에 수정)
@@ -73,7 +73,6 @@ const App = (() => {
 
     frame();
   };
-
 
   // ==========================================================================
   // State Management
@@ -194,55 +193,70 @@ const App = (() => {
     elements.missionEndedNotice.style.display = "none";
     elements.stampSection.style.display = "";
 
-    const html = state.loveLanguages.map((lang) => renderStampCard(lang)).join("");
+    const html = state.loveLanguages
+      .map((lang) => renderStampCard(lang))
+      .join("");
     elements.stampContainer.innerHTML = html;
 
     // 이벤트 바인딩
-    elements.stampContainer.querySelectorAll(".stamp-card__start-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openModal(parseInt(btn.dataset.id));
+    elements.stampContainer
+      .querySelectorAll(".stamp-card__start-btn")
+      .forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openModal(parseInt(btn.dataset.id));
+        });
       });
-    });
 
-    elements.stampContainer.querySelectorAll(".stamp-card__complete-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        handleComplete(parseInt(btn.dataset.id));
+    elements.stampContainer
+      .querySelectorAll(".stamp-card__complete-btn")
+      .forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          handleComplete(parseInt(btn.dataset.id));
+        });
       });
-    });
 
     // 사진 업로드 버튼(label) 클릭 시 이벤트 버블링 방지
-    elements.stampContainer.querySelectorAll(".stamp-card__upload-btn").forEach((label) => {
-      label.addEventListener("click", (e) => {
-        e.stopPropagation();
+    elements.stampContainer
+      .querySelectorAll(".stamp-card__upload-btn")
+      .forEach((label) => {
+        label.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
       });
-    });
 
     // 사진 업로드 이벤트
-    elements.stampContainer.querySelectorAll(".stamp-card__photo-input").forEach((input) => {
-      input.addEventListener("click", (e) => {
-        e.stopPropagation();
+    elements.stampContainer
+      .querySelectorAll(".stamp-card__photo-input")
+      .forEach((input) => {
+        input.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        input.addEventListener("change", (e) => {
+          e.stopPropagation();
+          handlePhotoUpload(parseInt(input.dataset.id), input.files[0]);
+        });
       });
-      input.addEventListener("change", (e) => {
-        e.stopPropagation();
-        handlePhotoUpload(parseInt(input.dataset.id), input.files[0]);
-      });
-    });
 
     // 사진 삭제 이벤트
-    elements.stampContainer.querySelectorAll(".stamp-card__photo-remove").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        handlePhotoRemove(parseInt(btn.dataset.id));
+    elements.stampContainer
+      .querySelectorAll(".stamp-card__photo-remove")
+      .forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          handlePhotoRemove(parseInt(btn.dataset.id));
+        });
       });
-    });
 
     // 카드 클릭 시 수정 (완료되지 않은 경우, 사진 없을 때만)
     elements.stampContainer.querySelectorAll(".stamp-card").forEach((card) => {
       card.addEventListener("click", (e) => {
         // 사진 업로드 영역 클릭 시 무시
-        if (e.target.closest(".stamp-card__photo-upload") || e.target.closest(".stamp-card__photo")) {
+        if (
+          e.target.closest(".stamp-card__photo-upload") ||
+          e.target.closest(".stamp-card__photo")
+        ) {
           return;
         }
         const id = parseInt(card.dataset.id);
@@ -389,14 +403,20 @@ const App = (() => {
     elements.missionOptions.innerHTML = optionsHtml;
 
     // 라디오 버튼 이벤트
-    elements.missionOptions.querySelectorAll('input[type="radio"]').forEach((radio) => {
-      radio.addEventListener("change", () => {
-        elements.missionOptions.querySelectorAll(".modal__option").forEach((opt) => {
-          opt.classList.remove("modal__option--selected");
+    elements.missionOptions
+      .querySelectorAll('input[type="radio"]')
+      .forEach((radio) => {
+        radio.addEventListener("change", () => {
+          elements.missionOptions
+            .querySelectorAll(".modal__option")
+            .forEach((opt) => {
+              opt.classList.remove("modal__option--selected");
+            });
+          radio
+            .closest(".modal__option")
+            .classList.add("modal__option--selected");
         });
-        radio.closest(".modal__option").classList.add("modal__option--selected");
       });
-    });
 
     elements.modal.style.display = "flex";
   };
@@ -411,7 +431,9 @@ const App = (() => {
     if (!languageId) return;
 
     const targetName = elements.targetNameInput.value.trim();
-    const selectedMission = elements.missionOptions.querySelector('input[name="mission"]:checked');
+    const selectedMission = elements.missionOptions.querySelector(
+      'input[name="mission"]:checked',
+    );
 
     if (!targetName) {
       showToast("대상자 이름을 입력해주세요");
@@ -483,7 +505,9 @@ const App = (() => {
 
     // 현재 일정으로 스크롤
     if (currentIndex >= 0) {
-      const currentItem = elements.timetableContainer.querySelector(".timetable-item--current");
+      const currentItem = elements.timetableContainer.querySelector(
+        ".timetable-item--current",
+      );
       if (currentItem) {
         currentItem.scrollIntoView({ behavior: "smooth", block: "center" });
       }
@@ -515,7 +539,7 @@ const App = (() => {
    */
   const generateShareImage = async () => {
     const completedLanguages = state.loveLanguages.filter(
-      (lang) => state.stampData[lang.id]?.completed
+      (lang) => state.stampData[lang.id]?.completed,
     );
 
     // 캔버스 크기 설정
@@ -532,7 +556,8 @@ const App = (() => {
         ? completedLanguages.length * (cardHeight + cardMargin)
         : 100;
 
-    const canvasHeight = headerHeight + cardsAreaHeight + footerHeight + padding * 2;
+    const canvasHeight =
+      headerHeight + cardsAreaHeight + footerHeight + padding * 2;
 
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
@@ -540,7 +565,12 @@ const App = (() => {
     const ctx = canvas.getContext("2d");
 
     // 배경 그라데이션
-    const bgGradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+    const bgGradient = ctx.createLinearGradient(
+      0,
+      0,
+      canvasWidth,
+      canvasHeight,
+    );
     bgGradient.addColorStop(0, "#0d0d0d");
     bgGradient.addColorStop(1, "#1a1a1a");
     ctx.fillStyle = bgGradient;
@@ -574,7 +604,11 @@ const App = (() => {
     const completedCount = getCompletedCount();
     ctx.font = "bold 22px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = "#e91e63";
-    ctx.fillText(`${state.userName}님의 도장: ${completedCount}/5개 🎉`, canvasWidth / 2, y);
+    ctx.fillText(
+      `${state.userName}님의 도장: ${completedCount}/5개 🎉`,
+      canvasWidth / 2,
+      y,
+    );
     y += 50;
 
     // 완료된 미션 카드들
@@ -588,7 +622,12 @@ const App = (() => {
         const cardWidth = canvasWidth - padding * 2;
 
         // 카드 그라데이션 테두리 효과
-        const cardGradient = ctx.createLinearGradient(cardX, cardY, cardX + cardWidth, cardY);
+        const cardGradient = ctx.createLinearGradient(
+          cardX,
+          cardY,
+          cardX + cardWidth,
+          cardY,
+        );
         cardGradient.addColorStop(0, "#e91e63");
         cardGradient.addColorStop(0.5, "#ff5722");
         cardGradient.addColorStop(1, "#ff9800");
@@ -597,7 +636,15 @@ const App = (() => {
 
         // 카드 내부 배경
         ctx.fillStyle = "#1a1a1a";
-        roundRect(ctx, cardX + 2, cardY + 2, cardWidth - 4, cardHeight - 4, 10, true);
+        roundRect(
+          ctx,
+          cardX + 2,
+          cardY + 2,
+          cardWidth - 4,
+          cardHeight - 4,
+          10,
+          true,
+        );
 
         // 왼쪽: 텍스트 정보
         const textX = cardX + 20;
@@ -629,7 +676,12 @@ const App = (() => {
 
         // COMPLETE 뱃지
         ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
-        const badgeGradient = ctx.createLinearGradient(textX, textY + 5, textX + 80, textY + 5);
+        const badgeGradient = ctx.createLinearGradient(
+          textX,
+          textY + 5,
+          textX + 80,
+          textY + 5,
+        );
         badgeGradient.addColorStop(0, "#e91e63");
         badgeGradient.addColorStop(1, "#ff5722");
         ctx.fillStyle = badgeGradient;
@@ -649,7 +701,15 @@ const App = (() => {
 
             // 사진 테두리
             ctx.fillStyle = "#333333";
-            roundRect(ctx, photoX - 2, photoY - 2, photoSize + 4, photoSize + 4, 10, true);
+            roundRect(
+              ctx,
+              photoX - 2,
+              photoY - 2,
+              photoSize + 4,
+              photoSize + 4,
+              10,
+              true,
+            );
 
             // 사진 클리핑
             ctx.save();
@@ -657,7 +717,10 @@ const App = (() => {
             ctx.clip();
 
             // 이미지 그리기 (중앙 정렬, 비율 유지)
-            const scale = Math.max(photoSize / img.width, photoSize / img.height);
+            const scale = Math.max(
+              photoSize / img.width,
+              photoSize / img.height,
+            );
             const imgWidth = img.width * scale;
             const imgHeight = img.height * scale;
             const imgX = photoX + (photoSize - imgWidth) / 2;
@@ -685,7 +748,11 @@ const App = (() => {
     ctx.textAlign = "center";
     ctx.fillStyle = "#666666";
     ctx.font = "12px -apple-system, BlinkMacSystemFont, sans-serif";
-    ctx.fillText("강남중앙침례교회 청년부 | LOVE in Action", canvasWidth / 2, y);
+    ctx.fillText(
+      "강남중앙침례교회 청년부 | LOVE in Action",
+      canvasWidth / 2,
+      y,
+    );
 
     return canvas;
   };
@@ -780,8 +847,12 @@ const App = (() => {
       const canvas = await generateShareImage();
 
       // Canvas를 Blob으로 변환 (JPEG로 변경 - 호환성 향상)
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
-      const file = new File([blob], "사랑의언어_도장판.jpg", { type: "image/jpeg" });
+      const blob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/jpeg", 0.9),
+      );
+      const file = new File([blob], "사랑의언어_도장판.jpg", {
+        type: "image/jpeg",
+      });
 
       // Web Share API (파일 공유) 지원 확인
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -845,7 +916,10 @@ const App = (() => {
     if (tab === "stamp") {
       handleMainTabChange("stamp");
       elements.bottomNavBtns.forEach((btn) => {
-        btn.classList.toggle("bottom-nav__btn--active", btn.dataset.tab === "stamp");
+        btn.classList.toggle(
+          "bottom-nav__btn--active",
+          btn.dataset.tab === "stamp",
+        );
       });
       const floatingWrapper = document.querySelector(".floating-share-wrapper");
       if (floatingWrapper) floatingWrapper.style.display = "block";
@@ -956,7 +1030,9 @@ const App = (() => {
     elements.modalBackdrop = document.querySelector(".modal__backdrop");
 
     // Navigation
-    elements.bottomNavBtns = Array.from(document.querySelectorAll(".bottom-nav__btn"));
+    elements.bottomNavBtns = Array.from(
+      document.querySelectorAll(".bottom-nav__btn"),
+    );
     elements.floatingShareBtn = document.getElementById("floatingShareBtn");
   };
 
@@ -974,7 +1050,9 @@ const App = (() => {
 
     // Bottom nav
     elements.bottomNavBtns.forEach((btn) => {
-      btn.addEventListener("click", () => handleBottomNavClick(btn.dataset.tab));
+      btn.addEventListener("click", () =>
+        handleBottomNavClick(btn.dataset.tab),
+      );
     });
 
     // Share button
