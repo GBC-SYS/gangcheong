@@ -8,9 +8,9 @@
   // 수련회 일정 설정 (여기서 날짜/시간 수정)
   // ========================================
   const RETREAT_DAYS = {
-    day1: new Date("2026-01-21"),
-    day2: new Date("2026-01-22"),
-    day3: new Date("2026-01-23"),
+    day1: new Date("2026-02-21"),
+    day2: new Date("2026-02-22"),
+    day3: new Date("2026-02-23"),
   };
 
   // 테스트용 시간 설정 (null이면 실제 현재 시간 사용)
@@ -49,6 +49,18 @@
     return null;
   };
 
+  // 날짜가 지났는지 확인
+  const isPastDay = (dayKey) => {
+    const dayDate = RETREAT_DAYS[dayKey];
+    if (!dayDate) return false;
+
+    const now = getNow();
+    const todayStr = toDateString(now);
+    const dayStr = toDateString(dayDate);
+
+    return dayStr < todayStr;
+  };
+
   // 날짜 포맷 ((2월 6일 금) 형식)
   const formatTabDate = (date) => {
     const days = ["주일", "월", "화", "수", "목", "금", "토"];
@@ -77,6 +89,9 @@
 
       // today 표시
       tab.classList.toggle("day-tab--today", day === todayDay);
+
+      // 지난 날짜 표시
+      tab.classList.toggle("day-tab--past", isPastDay(day));
     });
   };
 
@@ -173,8 +188,9 @@
   // 타임테이블 업데이터 시작
   const startTimetableUpdater = () => {
     if (timetableInterval) clearInterval(timetableInterval);
-    // 1분마다 타임테이블 업데이트
+    // 1분마다 타임테이블 및 탭 업데이트
     timetableInterval = setInterval(() => {
+      updateTabs();
       renderTimetable();
     }, 60000);
   };

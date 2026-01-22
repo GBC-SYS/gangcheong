@@ -91,6 +91,7 @@
 .day-tab__date {
   font-size: var(--text-sm);
   color: #666;
+  letter-spacing: -0.09em;
 }
 
 .day-tab--active {
@@ -114,4 +115,14 @@
   height: 8px;
   background: var(--color-primary);
   border-radius: 50%;
+}
+
+.day-tab--past {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.day-tab--past .day-tab__label,
+.day-tab--past .day-tab__date {
+  color: #555;
 }
