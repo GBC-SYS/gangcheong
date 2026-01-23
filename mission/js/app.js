@@ -1090,18 +1090,16 @@ const App = (() => {
     cacheElements();
     bindEvents();
 
-    // 스플래시는 세션당 1번만 표시
-    const splashShown = sessionStorage.getItem("splash_shown");
-
-    if (splashShown) {
+    // URL 파라미터로 스플래시 표시 여부 확인
+    if (UrlUtils.isSplashShown()) {
       // 이미 본 경우 즉시 숨김
       hideSplash(true);
       checkExistingUser();
     } else {
-      // 최초 접속: 스플래시 표시 후 숨기기
-      sessionStorage.setItem("splash_shown", "true");
+      // 최초 접속: 스플래시 표시 후 URL 업데이트
       setTimeout(() => {
         hideSplash();
+        UrlUtils.markSplashShown();
         checkExistingUser();
       }, 2200);
     }

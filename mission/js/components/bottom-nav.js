@@ -26,7 +26,7 @@
     {
       id: "stamp",
       label: "도장판",
-      href: isSubPage ? "../index.html" : null,
+      href: isSubPage ? UrlUtils.withSplashParam("../index.html") : null,
       icon: `<circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"></path>`,
     },
     {
@@ -59,7 +59,9 @@
         const activeClass = isActive ? " bottom-nav__btn--active" : "";
         const tag = item.href ? "a" : "button";
         const hrefAttr = item.href ? ` href="${item.href}"` : "";
-        const targetAttr = item.external ? ` target="_blank" rel="noopener noreferrer"` : "";
+        const targetAttr = item.external
+          ? ` target="_blank" rel="noopener noreferrer"`
+          : "";
 
         return `
         <${tag}${hrefAttr}${targetAttr} class="bottom-nav__btn${activeClass}" data-tab="${item.id}">
