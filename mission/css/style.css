@@ -807,13 +807,13 @@ textarea.input {
 }
 
 .btn-secondary {
-  background: var(--gradient-primary);
+  color: #ffffff;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  border: 1px solid transparent;
-  border-image: var(--gradient-primary) 1;
-  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-bg-card), var(--color-bg-card)) padding-box,
+    var(--gradient-primary) border-box;
 }
 
 /* ==========================================================================
