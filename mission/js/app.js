@@ -313,7 +313,7 @@ const App = (() => {
       }
 
       const canvas = document.createElement("canvas");
-      const maxSize = 400;
+      const maxSize = 800;
       let width = imageBitmap.width;
       let height = imageBitmap.height;
 
@@ -337,7 +337,7 @@ const App = (() => {
       ctx.drawImage(imageBitmap, 0, 0, width, height);
 
       // 압축된 이미지 저장
-      const compressedData = canvas.toDataURL("image/jpeg", 0.7);
+      const compressedData = canvas.toDataURL("image/jpeg", 1);
       state.stampData[languageId].photoData = compressedData;
       saveState();
       renderStamps();
@@ -545,12 +545,12 @@ const App = (() => {
     );
 
     // 캔버스 크기 설정
-    const canvasWidth = 600;
-    const headerHeight = 140;
-    const cardHeight = 180;
-    const cardMargin = 16;
-    const padding = 24;
-    const footerHeight = 60;
+    const canvasWidth = 1200;
+    const headerHeight = 280;
+    const cardHeight = 360;
+    const cardMargin = 32;
+    const padding = 48;
+    const footerHeight = 120;
 
     // 완료된 미션이 있을 때만 카드 영역 계산
     const cardsAreaHeight =
@@ -584,34 +584,34 @@ const App = (() => {
     topGradient.addColorStop(0.5, "#ff5722");
     topGradient.addColorStop(1, "#ff9800");
     ctx.fillStyle = topGradient;
-    ctx.fillRect(0, 0, canvasWidth, 4);
+    ctx.fillRect(0, 0, canvasWidth, 8);
 
     // 헤더 영역
-    let y = padding + 20;
+    let y = padding + 40;
 
     // 타이틀
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 28px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "bold 56px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("2026 강청 겨울 수련회", canvasWidth / 2, y);
-    y += 36;
+    y += 72;
 
     // 부제목
-    ctx.font = "18px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "36px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = "#a3a3a3";
     ctx.fillText("LOVE in Action - 사랑의 언어 도장판", canvasWidth / 2, y);
-    y += 40;
+    y += 80;
 
     // 사용자 이름 & 진행률
     const completedCount = getCompletedCount();
-    ctx.font = "bold 22px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "bold 44px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillStyle = "#e91e63";
     ctx.fillText(
       `${state.userName}님의 도장: ${completedCount}/5개 🎉`,
       canvasWidth / 2,
       y,
     );
-    y += 50;
+    y += 100;
 
     // 완료된 미션 카드들
     if (completedLanguages.length > 0) {
@@ -634,88 +634,88 @@ const App = (() => {
         cardGradient.addColorStop(0.5, "#ff5722");
         cardGradient.addColorStop(1, "#ff9800");
         ctx.fillStyle = cardGradient;
-        roundRect(ctx, cardX, cardY, cardWidth, cardHeight, 12, true);
+        roundRect(ctx, cardX, cardY, cardWidth, cardHeight, 24, true);
 
         // 카드 내부 배경
         ctx.fillStyle = "#1a1a1a";
         roundRect(
           ctx,
-          cardX + 2,
-          cardY + 2,
-          cardWidth - 4,
-          cardHeight - 4,
-          10,
+          cardX + 4,
+          cardY + 4,
+          cardWidth - 8,
+          cardHeight - 8,
+          20,
           true,
         );
 
         // 왼쪽: 텍스트 정보
-        const textX = cardX + 20;
-        let textY = cardY + 35;
+        const textX = cardX + 40;
+        let textY = cardY + 70;
 
         // 이모지 + 사랑의 언어 이름
         ctx.textAlign = "left";
-        ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.font = "bold 40px -apple-system, BlinkMacSystemFont, sans-serif";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(`${lang.emoji} ${lang.name}`, textX, textY);
-        textY += 32;
+        textY += 64;
 
         // 대상자
-        ctx.font = "16px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.font = "32px -apple-system, BlinkMacSystemFont, sans-serif";
         ctx.fillStyle = "#e91e63";
         ctx.fillText(`To. ${data.targetName}`, textX, textY);
-        textY += 28;
+        textY += 56;
 
         // 미션 내용 (긴 텍스트 줄바꿈)
         ctx.fillStyle = "#a3a3a3";
-        ctx.font = "14px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.font = "28px -apple-system, BlinkMacSystemFont, sans-serif";
         const missionText = lang.missions[data.selectedMission];
-        const maxTextWidth = data.photoData ? cardWidth - 160 : cardWidth - 50;
+        const maxTextWidth = data.photoData ? cardWidth - 320 : cardWidth - 100;
         const wrappedText = wrapText(ctx, missionText, maxTextWidth);
         for (const line of wrappedText) {
           ctx.fillText(line, textX, textY);
-          textY += 20;
+          textY += 40;
         }
 
         // COMPLETE 뱃지
-        ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.font = "bold 24px -apple-system, BlinkMacSystemFont, sans-serif";
         const badgeGradient = ctx.createLinearGradient(
           textX,
-          textY + 5,
-          textX + 80,
-          textY + 5,
+          textY + 10,
+          textX + 160,
+          textY + 10,
         );
         badgeGradient.addColorStop(0, "#e91e63");
         badgeGradient.addColorStop(1, "#ff5722");
         ctx.fillStyle = badgeGradient;
-        roundRect(ctx, textX, textY + 5, 80, 24, 12, true);
+        roundRect(ctx, textX, textY + 10, 160, 48, 24, true);
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
-        ctx.fillText("COMPLETE", textX + 40, textY + 21);
+        ctx.fillText("COMPLETE", textX + 80, textY + 42);
         ctx.textAlign = "left";
 
         // 오른쪽: 사진 (있는 경우)
         if (data.photoData) {
           try {
             const img = await loadImage(data.photoData);
-            const photoSize = 120;
-            const photoX = cardX + cardWidth - photoSize - 20;
+            const photoSize = 240;
+            const photoX = cardX + cardWidth - photoSize - 40;
             const photoY = cardY + (cardHeight - photoSize) / 2;
 
             // 사진 테두리
             ctx.fillStyle = "#333333";
             roundRect(
               ctx,
-              photoX - 2,
-              photoY - 2,
-              photoSize + 4,
-              photoSize + 4,
-              10,
+              photoX - 4,
+              photoY - 4,
+              photoSize + 8,
+              photoSize + 8,
+              20,
               true,
             );
 
             // 사진 클리핑
             ctx.save();
-            roundRect(ctx, photoX, photoY, photoSize, photoSize, 8, false);
+            roundRect(ctx, photoX, photoY, photoSize, photoSize, 16, false);
             ctx.clip();
 
             // 이미지 그리기 (중앙 정렬, 비율 유지)
@@ -740,16 +740,16 @@ const App = (() => {
       // 완료된 미션이 없는 경우
       ctx.textAlign = "center";
       ctx.fillStyle = "#666666";
-      ctx.font = "16px -apple-system, BlinkMacSystemFont, sans-serif";
-      ctx.fillText("아직 완료한 미션이 없습니다", canvasWidth / 2, y + 30);
-      y += 80;
+      ctx.font = "32px -apple-system, BlinkMacSystemFont, sans-serif";
+      ctx.fillText("아직 완료한 미션이 없습니다", canvasWidth / 2, y + 60);
+      y += 160;
     }
 
     // 하단 푸터
-    y = canvasHeight - 30;
+    y = canvasHeight - 60;
     ctx.textAlign = "center";
     ctx.fillStyle = "#666666";
-    ctx.font = "12px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "24px -apple-system, BlinkMacSystemFont, sans-serif";
     ctx.fillText(
       "강남중앙침례교회 청년부 | LOVE in Action",
       canvasWidth / 2,
@@ -887,7 +887,7 @@ const App = (() => {
   const downloadImage = (canvas) => {
     const link = document.createElement("a");
     link.download = `사랑의언어_도장판_${state.userName}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.href = canvas.toDataURL("image/png", 1);
     link.click();
     localStorage.setItem("last_share_date", getTodayKey());
     updateShareButtonShake();
@@ -1069,10 +1069,42 @@ const App = (() => {
     elements.modalBackdrop.addEventListener("click", closeModal);
   };
 
+  /**
+   * 스플래시 화면 숨기기
+   */
+  const hideSplash = (immediate = false) => {
+    const splash = document.getElementById("splash");
+    if (splash) {
+      if (immediate) {
+        splash.style.display = "none";
+      } else {
+        splash.classList.add("splash--hidden");
+        setTimeout(() => {
+          splash.style.display = "none";
+        }, 600);
+      }
+    }
+  };
+
   const init = () => {
     cacheElements();
     bindEvents();
-    checkExistingUser();
+
+    // 스플래시는 세션당 1번만 표시
+    const splashShown = sessionStorage.getItem("splash_shown");
+
+    if (splashShown) {
+      // 이미 본 경우 즉시 숨김
+      hideSplash(true);
+      checkExistingUser();
+    } else {
+      // 최초 접속: 스플래시 표시 후 숨기기
+      sessionStorage.setItem("splash_shown", "true");
+      setTimeout(() => {
+        hideSplash();
+        checkExistingUser();
+      }, 2200);
+    }
   };
 
   return { init };
