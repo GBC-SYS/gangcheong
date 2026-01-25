@@ -229,7 +229,12 @@
         // - clearAll: 전체 삭제
         const migrations = {
           1: {
-            keysToRemove: ["stamp_data", "last_share_date", "userName"],
+            keysToRemove: [
+              "stamp_data",
+              "last_share_date",
+              "userName",
+              "splash_shown",
+            ],
           },
           2: {
             keysToRemove: ["last_confetti_day1", "last_confetti_day2"],
