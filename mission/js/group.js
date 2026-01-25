@@ -67,7 +67,7 @@
 
     for (const group of groupsData.groups) {
       const member = group.members.find(
-        (m) => m.name === name && getLastFourDigits(m.phone) === phone
+        (m) => m.name === name && getLastFourDigits(m.phone) === phone,
       );
       if (member) {
         return {
