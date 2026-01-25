@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="강남중앙침례교회 청년부 수련회 조 확인" />
+
+    <!-- Open Graph / 카카오톡 공유 -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://gbc-sys.github.io/gangcheong/mission/page/group.html"
+    />
+    <meta property="og:title" content="2026 강청 겨울 수련회 - 조 확인" />
+    <meta
+      property="og:description"
+      content="이름과 전화번호로 내 조를 확인하세요!"
+    />
+    <meta
+      property="og:image"
+      content="https://gbc-sys.github.io/gangcheong/mission/assets/images/seo.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="강남중앙침례교회 청년부" />
+    <meta property="og:locale" content="ko_KR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="2026 강청 겨울 수련회 - 조 확인" />
+    <meta
+      name="twitter:description"
+      content="이름과 전화번호로 내 조를 확인하세요!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://gbc-sys.github.io/gangcheong/mission/assets/images/seo.png"
+    />
+
+    <title>강청 | 조 확인</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/group.css" />
+  </head>
+  <body>
+    <div class="group-page">
+      <!-- 헤더 -->
+      <header class="group-header">
+        <img
+          src="../assets/images/logo.jpg"
+          alt="로고"
+          class="group-header__logo"
+        />
+        <h1 class="group-header__title">조 확인</h1>
+        <p class="group-header__subtitle">
+          이름과 전화번호로 내 조를 찾아보세요
+        </p>
+      </header>
+
+      <!-- 검색 폼 -->
+      <div class="group-search">
+        <div class="group-search__field">
+          <label class="group-search__label" for="searchName">이름</label>
+          <input
+            type="text"
+            id="searchName"
+            class="group-search__input"
+            placeholder="이름을 입력하세요"
+            autocomplete="off"
+          />
+        </div>
+        <div class="group-search__field">
+          <label class="group-search__label" for="searchPhone"
+            >전화번호 뒷 4자리</label
+          >
+          <input
+            type="tel"
+            id="searchPhone"
+            class="group-search__input"
+            placeholder="예: 1234"
+            maxlength="4"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            autocomplete="off"
+          />
+        </div>
+        <button type="button" id="searchBtn" class="group-search__btn">
+          조 확인하기
+        </button>
+      </div>
+
+      <!-- 로딩 영역 -->
+      <div id="groupLoading" class="group-loading">
+        <div class="group-loading__spinner"></div>
+        <p class="group-loading__text">데이터를 불러오는 중...</p>
+      </div>
+
+      <!-- 결과 영역 -->
+      <div id="groupResult" class="group-result">
+        <!-- 동적으로 채워집니다 -->
+      </div>
+
+      <!-- 에러 영역 -->
+      <div id="groupError" class="group-error">
+        <div class="group-error__icon">😢</div>
+        <p class="group-error__title">조를 찾을 수 없어요</p>
+        <p class="group-error__desc">이름과 전화번호를 다시 확인해주세요</p>
+      </div>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div id="bottomNavContainer"></div>
+
+    <!-- Scripts -->
+    <script src="../js/utils/url.js"></script>
+    <script src="../js/components/bottom-nav.js"></script>
+    <script src="../js/group.js"></script>
+  </body>
+</html>

@@ -14,8 +14,7 @@
   // 현재 활성 탭 확인
   const getActiveTab = () => {
     if (currentPath.includes("timetable")) return "timetable";
-    if (currentPath.includes("testimony")) return "testimony";
-    if (currentPath.includes("survey")) return "survey";
+    if (currentPath.includes("group")) return "group";
     return "stamp"; // 기본값 (index.html)
   };
 
@@ -36,18 +35,17 @@
       icon: `<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>`,
     },
     {
-      id: "testimony",
-      label: "간증문",
+      id: "group",
+      label: "조 확인",
+      href: activeTab === "group" ? null : `${pagePrefix}group.html`,
+      icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>`,
+    },
+    {
+      id: "forms",
+      label: "간증/설문",
       href: "https://forms.google.com/",
       external: true,
       icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>`,
-    },
-    {
-      id: "survey",
-      label: "설문",
-      href: "https://forms.google.com/",
-      external: true,
-      icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line>`,
     },
   ];
 

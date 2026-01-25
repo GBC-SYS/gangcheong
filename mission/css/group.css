@@ -1,0 +1,302 @@
+/* ==========================================================================
+   Group Page Styles (조 확인 페이지 전용)
+   ========================================================================== */
+
+.group-page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-8) + 80px);
+}
+
+.group-header {
+  text-align: center;
+  padding: var(--space-6) 0;
+  margin-bottom: var(--space-4);
+}
+
+.group-header__logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
+}
+
+.group-header__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.group-header__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   Search Form (검색 폼)
+   ========================================================================== */
+
+.group-search {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.group-search__field {
+  margin-bottom: var(--space-4);
+}
+
+.group-search__field:last-of-type {
+  margin-bottom: var(--space-5);
+}
+
+.group-search__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.group-search__input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  transition: border-color 0.2s ease;
+}
+
+.group-search__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.group-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.group-search__btn {
+  width: 100%;
+  padding: var(--space-4);
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.group-search__btn:active {
+  transform: scale(0.98);
+}
+
+.group-search__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Result Card (결과 카드)
+   ========================================================================== */
+
+.group-result {
+  display: none;
+}
+
+.group-result--visible {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.group-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-lg) + 2px);
+  background: var(--gradient-primary);
+  z-index: -1;
+}
+
+.group-card__header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.group-card__number {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-2);
+}
+
+.group-card__leader {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.group-card__leader strong {
+  color: var(--color-text);
+  font-weight: var(--font-semibold);
+}
+
+.group-card__section-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.group-card__members {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.group-card__member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.group-card__member--me {
+  background: rgba(233, 30, 99, 0.15);
+  border: 1px solid rgba(233, 30, 99, 0.3);
+}
+
+.group-card__member-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.group-card__member-name {
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.group-card__member-badge {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  padding: 2px 8px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  font-weight: var(--font-semibold);
+}
+
+/* ==========================================================================
+   Error State (에러 상태)
+   ========================================================================== */
+
+.group-error {
+  display: none;
+  text-align: center;
+  padding: var(--space-6);
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: var(--radius-lg);
+}
+
+.group-error--visible {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.group-error__icon {
+  font-size: 48px;
+  margin-bottom: var(--space-3);
+}
+
+.group-error__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: #f44336;
+  margin-bottom: var(--space-2);
+}
+
+.group-error__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   Loading State (로딩 상태)
+   ========================================================================== */
+
+.group-loading {
+  display: none;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.group-loading--visible {
+  display: block;
+}
+
+.group-loading__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  margin: 0 auto var(--space-4);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.group-loading__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
