@@ -118,6 +118,9 @@
 
     resultContainer.classList.add("group-result--visible");
     errorContainer.classList.remove("group-error--visible");
+
+    // 결과 영역으로 스크롤
+    resultContainer.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   /**
@@ -126,6 +129,9 @@
   function showError() {
     resultContainer.classList.remove("group-result--visible");
     errorContainer.classList.add("group-error--visible");
+
+    // 에러 영역으로 스크롤
+    errorContainer.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   /**
