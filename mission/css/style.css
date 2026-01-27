@@ -1133,6 +1133,30 @@ textarea.input {
   margin-bottom: var(--space-5);
 }
 
+.stamp-section__quiz-link {
+  display: block;
+  width: 100%;
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.stamp-section__quiz-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(233, 30, 99, 0.4);
+}
+
+.stamp-section__quiz-link:active {
+  transform: translateY(0);
+}
+
 .stamp-container {
   display: flex;
   flex-direction: column;

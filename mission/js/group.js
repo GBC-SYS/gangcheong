@@ -17,7 +17,7 @@
 
   // Google Sheets API URL
   const SHEETS_API_URL =
-    "https://script.google.com/macros/s/AKfycbymaH1tHBHk25NCHQvDC6qPtBIp-N4H1MkqB2ktICZJ9Yp2yHmOCwwJ99HpQe2-fCnl/exec";
+    "https://script.google.com/macros/s/AKfycby2M_xENOgtu_Qe9rIHOb-h0YEzTcsF0BvBBlNNr7mpy-Hh0B7RX2M00szYA2U_axJy/exec";
 
   /**
    * 로딩 상태 표시
@@ -83,7 +83,7 @@
    * 결과 렌더링
    */
   function renderResult(result, searchName) {
-    const { group } = result;
+    const { group, member: searchedMember } = result;
 
     const membersHTML = group.members
       .map((member) => {
@@ -101,11 +101,17 @@
       })
       .join("");
 
+    // 방 배정 정보 (있을 경우에만 표시)
+    const roomHTML = searchedMember.room
+      ? `<p class="group-card__room">방 배정: <strong>${searchedMember.room}</strong></p>`
+      : "";
+
     resultContainer.innerHTML = `
       <div class="group-card">
         <div class="group-card__header">
           <div class="group-card__number">${group.name}</div>
           <p class="group-card__leader">조장: <strong>${group.leader}</strong></p>
+          ${roomHTML}
         </div>
         <div class="group-card__body">
           <p class="group-card__section-title">조원 명단</p>

@@ -175,6 +175,17 @@
   font-weight: var(--font-semibold);
 }
 
+.group-card__room {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2);
+}
+
+.group-card__room strong {
+  color: var(--color-primary);
+  font-weight: var(--font-semibold);
+}
+
 .group-card__section-title {
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
