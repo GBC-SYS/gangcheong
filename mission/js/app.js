@@ -159,7 +159,7 @@ const App = (() => {
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
                   <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                <span>사진으로 인증하기</span>
+                <span>사진으로 인증하기<br/><small>(미션대상자와 함께 셀카로 인증)</small></span>
               </label>
               <input type="file" id="photo-${language.id}" class="stamp-card__photo-input" data-id="${language.id}" accept="image/*" />
             </div>
