@@ -336,8 +336,8 @@ const App = (() => {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(imageBitmap, 0, 0, width, height);
 
-      // 압축된 이미지 저장
-      const compressedData = canvas.toDataURL("image/jpeg", 1);
+      // 압축된 이미지 저장 (품질 0.6으로 용량 절감)
+      const compressedData = canvas.toDataURL("image/jpeg", 0.6);
       state.stampData[languageId].photoData = compressedData;
       saveState();
       renderStamps();
