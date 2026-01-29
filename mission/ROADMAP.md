@@ -62,6 +62,12 @@
 
 - [x] 구글 폼 링크로 외부 이동
 - [x] 바텀 네비게이션에 간증문/설문 버튼 추가
+- [x] 날짜 기반 활성화 기능 구현
+  - 특정 날짜(2월 8일)부터만 간증/설문 버튼 활성화
+  - 활성화 전: 안내 메시지 표시 ("2월 8일부터 이용 가능합니다")
+  - 타임존 기반 날짜 체크 (Asia/Seoul)
+  - 팩토리 함수 패턴 적용 (createDateChecker, createBottomNav)
+  - 구현 파일: `js/utils/date-checker.js`, `js/components/bottom-nav.js`
 
 ### Phase 5: 네비게이션 및 통합 ✅
 

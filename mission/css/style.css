@@ -713,6 +713,15 @@ body {
   stroke: #ffffff;
 }
 
+.bottom-nav__btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bottom-nav__btn--disabled:active {
+  transform: none;
+}
+
 /* ==========================================================================
    Night Notice (야간 안내)
    ========================================================================== */
