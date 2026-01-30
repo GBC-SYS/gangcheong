@@ -15,9 +15,8 @@
   const errorContainer = document.getElementById("groupError");
   const loadingContainer = document.getElementById("groupLoading");
 
-  // Google Sheets API URL
-  const SHEETS_API_URL =
-    "https://script.google.com/macros/s/AKfycby2M_xENOgtu_Qe9rIHOb-h0YEzTcsF0BvBBlNNr7mpy-Hh0B7RX2M00szYA2U_axJy/exec";
+  // Groups data JSON file path
+  const GROUPS_DATA_PATH = "../data/groups.json";
 
   /**
    * 로딩 상태 표시
@@ -36,12 +35,12 @@
   }
 
   /**
-   * 그룹 데이터 로드 (구글 시트에서)
+   * 그룹 데이터 로드 (정적 JSON 파일에서)
    */
   async function loadGroupsData() {
     showLoading();
     try {
-      const response = await fetch(SHEETS_API_URL);
+      const response = await fetch(GROUPS_DATA_PATH);
       if (!response.ok) throw new Error("Failed to load groups data");
       groupsData = await response.json();
     } catch (error) {
