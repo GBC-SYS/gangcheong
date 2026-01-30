@@ -49,12 +49,6 @@ const createBottomNav = (config = {}) => {
 
     return [
       {
-        id: "stamp",
-        label: "도장판",
-        href: isSubPage ? "../index.html" : null,
-        icon: `<circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"></path>`,
-      },
-      {
         id: "timetable",
         label: "타임테이블",
         href: activeTab === "timetable" ? null : `${pagePrefix}timetable.html`,
@@ -65,6 +59,12 @@ const createBottomNav = (config = {}) => {
         label: "조 확인",
         href: activeTab === "group" ? null : `${pagePrefix}group.html`,
         icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>`,
+      },
+      {
+        id: "stamp",
+        label: "도장판",
+        href: isSubPage ? "../index.html" : null,
+        icon: `<circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4"></path>`,
       },
       {
         id: "forms",
@@ -102,7 +102,8 @@ const createBottomNav = (config = {}) => {
 
         // disabled 상태면 button (클릭 이벤트로 처리), 아니면 링크 또는 버튼
         const tag = item.disabled ? "button" : item.href ? "a" : "button";
-        const hrefAttr = !item.disabled && item.href ? ` href="${item.href}"` : "";
+        const hrefAttr =
+          !item.disabled && item.href ? ` href="${item.href}"` : "";
         const targetAttr =
           !item.disabled && item.external
             ? ` target="_blank" rel="noopener noreferrer"`

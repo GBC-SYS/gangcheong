@@ -11,8 +11,9 @@
     "label": "2월 7일 (토)",
     "schedules": [
       { "time": "07:30", "title": "기상 및 아침식사" },
-      { "time": "08:30", "title": "집회 2 (진유석 전도사님)" },
-      { "time": "09:30", "title": "Let's L.I.A" },
+      { "time": "08:30", "title": "QT" },
+      { "time": "09:30", "title": "집회 2" },
+      { "time": "10:30", "title": "Let's L.I.A" },
       { "time": "11:00", "title": "Learning L.I.A" },
       { "time": "11:45", "title": "암송" },
       { "time": "12:00", "title": "점심식사" },
