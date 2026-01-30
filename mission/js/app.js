@@ -198,6 +198,7 @@ const App = (() => {
     const html = state.loveLanguages
       .map((lang) => renderStampCard(lang))
       .join("");
+    if (!elements.stampContainer) return;
     elements.stampContainer.innerHTML = html;
 
     // 이벤트 바인딩
@@ -402,6 +403,7 @@ const App = (() => {
     `,
       )
       .join("");
+    if (!elements.missionOptions) return;
     elements.missionOptions.innerHTML = optionsHtml;
 
     // 라디오 버튼 이벤트
@@ -503,6 +505,7 @@ const App = (() => {
       })
       .join("");
 
+    if (!elements.timetableContainer) return;
     elements.timetableContainer.innerHTML = html;
 
     // 현재 일정으로 스크롤
@@ -850,7 +853,7 @@ const App = (() => {
 
       // Canvas를 Blob으로 변환 (JPEG로 변경 - 호환성 향상)
       const blob = await new Promise((resolve) =>
-        canvas.toBlob(resolve, "image/jpeg", 0.9),
+        canvas.toBlob(resolve, "image/jpeg", 0.6),
       );
       const file = new File([blob], "사랑의언어_도장판.jpg", {
         type: "image/jpeg",
@@ -938,7 +941,7 @@ const App = (() => {
 
   const loadData = async () => {
     try {
-      const response = await fetch("./data/missions.json");
+      const response = await fetch("../data/missions.json");
       if (response.ok) {
         const data = await response.json();
         state.loveLanguages = data.loveLanguages || [];
@@ -968,11 +971,21 @@ const App = (() => {
 
     state.userName = name;
     localStorage.setItem("userName", name);
+
+    // 인트로 페이지(index.html)에서는 타임테이블로 이동
+    const isIntroPage = !getEl("app");
+    if (isIntroPage) {
+      window.location.href = "page/timetable.html";
+      return;
+    }
     showApp();
   };
 
   const showApp = () => {
-    elements.intro.style.display = "none";
+    if (elements.intro) {
+      elements.intro.style.display = "none";
+    }
+    if (!elements.app) return;
     elements.app.style.display = "flex";
     window.scrollTo({ top: 0, behavior: "instant" });
 
@@ -988,7 +1001,20 @@ const App = (() => {
     const savedName = localStorage.getItem("userName");
     if (savedName) {
       state.userName = savedName;
+
+      // 인트로 페이지(index.html)에서는 타임테이블로 이동
+      const isIntroPage = !getEl("app");
+      if (isIntroPage) {
+        window.location.href = "page/timetable.html";
+        return;
+      }
       showApp();
+    } else {
+      // userName이 없으면 인트로 페이지로 리다이렉트 (index.html이 아닌 경우)
+      const isIntroPage = !getEl("app");
+      if (!isIntroPage) {
+        window.location.href = "../index.html";
+      }
     }
   };
 
@@ -996,54 +1022,60 @@ const App = (() => {
   // Bootstrap Functions
   // ==========================================================================
 
+  const getEl = (id) => document.getElementById(id);
+
   const cacheElements = () => {
     // Intro
-    elements.intro = document.getElementById("intro");
-    elements.userNameInput = document.getElementById("userName");
-    elements.startBtn = document.getElementById("startBtn");
+    elements.intro = getEl("intro");
+    elements.userNameInput = getEl("userName");
+    elements.startBtn = getEl("startBtn");
 
     // App
-    elements.app = document.getElementById("app");
-    elements.header = document.getElementById("header");
+    elements.app = getEl("app");
+    elements.header = getEl("header");
 
     // Notices
-    elements.beforeStartNotice = document.getElementById("beforeStartNotice");
-    elements.missionEndedNotice = document.getElementById("missionEndedNotice");
+    elements.beforeStartNotice = getEl("beforeStartNotice");
+    elements.missionEndedNotice = getEl("missionEndedNotice");
 
     // Main tabs
     elements.mainTabs = Array.from(document.querySelectorAll(".main-tab"));
 
     // Stamp section
-    elements.stampSection = document.getElementById("stampSection");
-    elements.stampContainer = document.getElementById("stampContainer");
+    elements.stampSection = getEl("stampSection");
+    elements.stampContainer = getEl("stampContainer");
 
     // Timetable section
-    elements.timetableSection = document.getElementById("timetableSection");
-    elements.timetableContainer = document.getElementById("timetableContainer");
+    elements.timetableSection = getEl("timetableSection");
+    elements.timetableContainer = getEl("timetableContainer");
 
     // Modal
-    elements.modal = document.getElementById("missionModal");
-    elements.modalTitle = document.getElementById("modalTitle");
-    elements.targetNameInput = document.getElementById("targetName");
-    elements.missionOptions = document.getElementById("missionOptions");
-    elements.modalClose = document.getElementById("modalClose");
-    elements.modalCancel = document.getElementById("modalCancel");
-    elements.modalConfirm = document.getElementById("modalConfirm");
+    elements.modal = getEl("missionModal");
+    elements.modalTitle = getEl("modalTitle");
+    elements.targetNameInput = getEl("targetName");
+    elements.missionOptions = getEl("missionOptions");
+    elements.modalClose = getEl("modalClose");
+    elements.modalCancel = getEl("modalCancel");
+    elements.modalConfirm = getEl("modalConfirm");
     elements.modalBackdrop = document.querySelector(".modal__backdrop");
 
     // Navigation
     elements.bottomNavBtns = Array.from(
       document.querySelectorAll(".bottom-nav__btn"),
     );
-    elements.floatingShareBtn = document.getElementById("floatingShareBtn");
+    elements.floatingShareBtn = getEl("floatingShareBtn");
   };
 
   const bindEvents = () => {
-    elements.startBtn.addEventListener("click", handleStart);
+    if (elements.startBtn) {
+      elements.startBtn.addEventListener("click", handleStart);
+    }
 
-    elements.userNameInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") handleStart();
-    });
+    if (elements.userNameInput) {
+      elements.userNameInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleStart();
+      });
+    }
 
     // Main tabs
     elements.mainTabs.forEach((tab) => {
@@ -1063,17 +1095,19 @@ const App = (() => {
     }
 
     // Modal
-    elements.modalClose.addEventListener("click", closeModal);
-    elements.modalCancel.addEventListener("click", closeModal);
-    elements.modalConfirm.addEventListener("click", handleModalConfirm);
-    elements.modalBackdrop.addEventListener("click", closeModal);
+    if (elements.modalClose) {
+      elements.modalClose.addEventListener("click", closeModal);
+      elements.modalCancel.addEventListener("click", closeModal);
+      elements.modalConfirm.addEventListener("click", handleModalConfirm);
+      elements.modalBackdrop.addEventListener("click", closeModal);
+    }
   };
 
   /**
    * 스플래시 화면 숨기기
    */
   const hideSplash = (immediate = false) => {
-    const splash = document.getElementById("splash");
+    const splash = getEl("splash");
     if (splash) {
       if (immediate) {
         splash.style.display = "none";
