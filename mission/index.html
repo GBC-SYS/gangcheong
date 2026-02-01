@@ -123,7 +123,7 @@
     <script>
       // 로컬스토리지 스키마 버전 관리
       (function () {
-        const SCHEMA_VERSION = 99;
+        const SCHEMA_VERSION = 100;
         const SCHEMA_KEY = "app_schema_version";
 
         const migrations = {
@@ -140,6 +140,7 @@
             keysToRemove: ["last_confetti_day1", "last_confetti_day2"],
           },
           99: { clearAll: true },
+          100: { clearAll: true },
         };
 
         const savedVersion = parseInt(localStorage.getItem(SCHEMA_KEY)) || 0;
