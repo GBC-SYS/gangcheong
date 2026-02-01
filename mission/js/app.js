@@ -11,8 +11,8 @@ const App = (() => {
   const MISSION_SCHEDULE = {
     // start: new Date("2026-02-07T06:59:00"),
     // end: new Date("2026-02-07T23:59:00"),
-    start: new Date("2026-01-22T07:00:00"),
-    end: new Date("2026-01-31T23:59:00"),
+    start: new Date("2026-02-01T07:00:00"),
+    end: new Date("2026-02-08T23:59:00"),
   };
 
   // 구글폼 링크 (임원단이 나중에 수정)
