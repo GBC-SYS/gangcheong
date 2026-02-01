@@ -9,8 +9,6 @@ const App = (() => {
 
   // 미션 진행 시간 (하루만 진행)
   const MISSION_SCHEDULE = {
-    // start: new Date("2026-02-07T06:59:00"),
-    // end: new Date("2026-02-07T23:59:00"),
     start: new Date("2026-02-01T07:00:00"),
     end: new Date("2026-02-08T23:59:00"),
   };
