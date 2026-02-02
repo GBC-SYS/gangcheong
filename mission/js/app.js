@@ -421,10 +421,12 @@ const App = (() => {
       });
 
     elements.modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     elements.modal.style.display = "none";
+    document.body.style.overflow = "";
     state.currentModalLanguageId = null;
   };
 
