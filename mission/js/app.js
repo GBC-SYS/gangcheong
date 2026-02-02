@@ -1009,12 +1009,6 @@ const App = (() => {
         return;
       }
       showApp();
-    } else {
-      // userName이 없으면 인트로 페이지로 리다이렉트 (index.html이 아닌 경우)
-      const isIntroPage = !getEl("app");
-      if (!isIntroPage) {
-        window.location.href = "../index.html";
-      }
     }
   };
 
