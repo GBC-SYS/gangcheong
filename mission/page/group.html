@@ -67,7 +67,9 @@
           alt="로고"
           class="group-header__logo"
         />
-        <h1 class="group-header__title">조 확인</h1>
+        <p class="group-header__greeting">
+          안녕하세요, <span id="displayName"></span>님!
+        </p>
         <p class="group-header__subtitle">
           이름과 전화번호로 내 조를 찾아보세요
         </p>
@@ -132,6 +134,8 @@
       if (!localStorage.getItem("userName")) {
         window.location.href = "../index.html";
       }
+      document.getElementById("displayName").textContent =
+        localStorage.getItem("userName");
     </script>
     <script src="../js/utils/url.js"></script>
     <script src="../js/utils/date-checker.js"></script>

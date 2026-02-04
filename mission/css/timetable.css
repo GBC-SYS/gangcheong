@@ -24,11 +24,15 @@
   box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
 }
 
-.timetable-header__title {
+.timetable-header__greeting {
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   color: var(--color-text);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.timetable-header__greeting span {
+  color: var(--color-text);
 }
 
 .timetable-header__subtitle {

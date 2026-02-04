@@ -24,11 +24,15 @@
   box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
 }
 
-.group-header__title {
+.group-header__greeting {
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   color: var(--color-text);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.group-header__greeting span {
+  color: var(--color-text);
 }
 
 .group-header__subtitle {
@@ -94,7 +98,9 @@
   font-weight: var(--font-semibold);
   color: #ffffff;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.1s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
 }
 
 .group-search__btn:active {

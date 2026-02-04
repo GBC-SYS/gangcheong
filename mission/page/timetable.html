@@ -70,7 +70,9 @@
           alt="로고"
           class="timetable-header__logo"
         />
-        <h1 class="timetable-header__title">타임테이블</h1>
+        <p class="timetable-header__greeting">
+          안녕하세요, <span id="displayName"></span>님!
+        </p>
         <p class="timetable-header__subtitle">2026 강청 겨울 수련회 일정</p>
       </header>
 
@@ -107,6 +109,8 @@
       if (!localStorage.getItem("userName")) {
         window.location.href = "../index.html";
       }
+      document.getElementById("displayName").textContent =
+        localStorage.getItem("userName");
     </script>
     <script src="../js/utils/url.js"></script>
     <script src="../js/utils/date-checker.js"></script>
