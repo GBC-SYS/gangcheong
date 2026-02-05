@@ -1005,7 +1005,7 @@ const App = (() => {
       // 인트로 페이지(index.html)에서는 타임테이블로 이동
       const isIntroPage = !getEl("app");
       if (isIntroPage) {
-        window.location.href = "page/timetable.html";
+        window.location.href = "page/group.html";
         return;
       }
       showApp();
