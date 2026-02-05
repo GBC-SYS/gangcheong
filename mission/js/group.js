@@ -87,14 +87,12 @@
     const membersHTML = group.members
       .map((member) => {
         const isMe = member.name === searchName;
-        const isLeader = member.name === group.leader;
         const meClass = isMe ? " group-card__member--me" : "";
 
         return `
           <div class="group-card__member${meClass}">
             <div class="group-card__member-icon">${member.name.charAt(0)}</div>
             <span class="group-card__member-name">${member.name}</span>
-            ${isLeader ? '<span class="group-card__member-badge">조장</span>' : ""}
           </div>
         `;
       })
@@ -109,7 +107,6 @@
       <div class="group-card">
         <div class="group-card__header">
           <div class="group-card__number">${group.name}</div>
-          <p class="group-card__leader">조장: <strong>${group.leader}</strong></p>
           ${roomHTML}
         </div>
         <div class="group-card__body">

@@ -171,16 +171,6 @@
   margin-bottom: var(--space-2);
 }
 
-.group-card__leader {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-}
-
-.group-card__leader strong {
-  color: var(--color-text);
-  font-weight: var(--font-semibold);
-}
-
 .group-card__room {
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
@@ -325,3 +315,4 @@
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
 }
+
