@@ -941,7 +941,7 @@ const App = (() => {
 
   const loadData = async () => {
     try {
-      const response = await fetch("../data/missions.json");
+      const response = await fetch("../data/missions.json", { cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
         state.loveLanguages = data.loveLanguages || [];

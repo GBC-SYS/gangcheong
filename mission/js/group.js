@@ -40,7 +40,7 @@
   async function loadGroupsData() {
     showLoading();
     try {
-      const response = await fetch(GROUPS_DATA_PATH);
+      const response = await fetch(GROUPS_DATA_PATH, { cache: 'no-store' });
       if (!response.ok) throw new Error("Failed to load groups data");
       groupsData = await response.json();
     } catch (error) {

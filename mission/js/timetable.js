@@ -198,7 +198,7 @@
   // 데이터 로드 및 초기화
   const init = async () => {
     try {
-      const response = await fetch("../data/timetable.json");
+      const response = await fetch("../data/timetable.json", { cache: 'no-store' });
       timetableData = await response.json();
 
       // 오늘에 해당하는 탭이 있으면 자동 선택
