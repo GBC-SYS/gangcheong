@@ -1682,26 +1682,6 @@ textarea.input {
   color: var(--color-text);
   min-width: 24px;
   text-align: center;
-  transition: all 0.3s ease;
-}
-
-.visitor-counter__count--updating {
-  animation: visitor-pulse 0.3s ease;
-}
-
-@keyframes visitor-pulse {
-  0% {
-    transform: scale(1);
-    color: var(--color-text);
-  }
-  50% {
-    transform: scale(1.2);
-    color: var(--color-primary);
-  }
-  100% {
-    transform: scale(1);
-    color: var(--color-text);
-  }
 }
 
 .visitor-counter__label {

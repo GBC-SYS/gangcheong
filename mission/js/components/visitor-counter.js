@@ -75,18 +75,12 @@ const VisitorCounter = (() => {
   };
 
   /**
-   * 숫자 렌더링 (펄스 애니메이션)
+   * 숫자 렌더링
    */
   const renderCount = () => {
     const el = document.getElementById("visitorCountNum");
     if (!el) return;
-
-    el.classList.add("visitor-counter__count--updating");
     el.textContent = currentCount;
-
-    setTimeout(() => {
-      el.classList.remove("visitor-counter__count--updating");
-    }, 300);
   };
 
   /**
