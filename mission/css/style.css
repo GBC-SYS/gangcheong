@@ -1651,3 +1651,64 @@ textarea.input {
 .hidden {
   display: none !important;
 }
+
+/* ==========================================================================
+   Visitor Counter (접속자 수 배지)
+   ========================================================================== */
+
+.visitor-counter {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+  z-index: 98;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.visitor-counter__icon {
+  font-size: var(--text-md);
+}
+
+.visitor-counter__count {
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  min-width: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.visitor-counter__count--updating {
+  animation: visitor-pulse 0.3s ease;
+}
+
+@keyframes visitor-pulse {
+  0% {
+    transform: scale(1);
+    color: var(--color-text);
+  }
+  50% {
+    transform: scale(1.2);
+    color: var(--color-primary);
+  }
+  100% {
+    transform: scale(1);
+    color: var(--color-text);
+  }
+}
+
+.visitor-counter__label {
+  white-space: nowrap;
+}
+
+/* stamp 페이지: 공유하기 버튼 위로 위치 조정 */
+body:has(.floating-share-wrapper) .visitor-counter {
+  bottom: 160px;
+}
