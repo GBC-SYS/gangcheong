@@ -100,7 +100,7 @@ const DateChecker = (() => {
   // 간증/설문 기능용 기본 인스턴스 (2월 8일 낮 12시 활성화)
   const formsChecker = createDateChecker({
     activationDate: "2026-02-08",
-    activationHour: 12,
+    activationHour: 11,
   });
 
   return {
