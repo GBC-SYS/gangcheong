@@ -125,11 +125,11 @@ const VisitorCounter = (() => {
   return { init };
 })();
 
-// 자동 초기화
-(function () {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => VisitorCounter.init());
-  } else {
-    VisitorCounter.init();
-  }
-})();
+// 자동 초기화 (비활성화됨)
+// (function () {
+//   if (document.readyState === "loading") {
+//     document.addEventListener("DOMContentLoaded", () => VisitorCounter.init());
+//   } else {
+//     VisitorCounter.init();
+//   }
+// })();
